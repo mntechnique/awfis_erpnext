@@ -65,9 +65,10 @@ def validate_stock_entry(self, method):
 	for item in self.items:
 		#If batch item, batch no must be specified.
 		if frappe.db.get_value("Item", item.item_code, "has_batch_no"):
+			item_group = frappe.db.get_value("Item", item.item_code, "item_group")
 			# if (not item.batch_no):
 			# 	frappe.throw(_("Row {0}: Batch number is mandatory for {1}".format(item.idx, item.item_name)))
-			expiry_warning_period = int(frappe.db.get_value('Awfis Settings', None, 'expiry_warning_period') or 0)
+			expiry_warning_period = int(frappe.db.get_value('Item Group', item_group, 'expiry_warning_period') or 0)
 
 			if expiry_warning_period and item.batch_no: #Without batch no, validation goes through.
 				expiry_date = frappe.db.get_value('Batch', item.batch_no, 'expiry_date')
