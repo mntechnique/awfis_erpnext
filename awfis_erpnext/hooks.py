@@ -127,6 +127,7 @@ fixtures = ["Custom Script",
 					'Contact-joining_date', 'Contact-pan_card_no', 'Contact-date_of_anniversary', 'Contact-date_of_birth',
 					'Contact-col_break_custom_1', 'Contact-contact_type', 'Customer-number_of_employees', 'Customer-industry',
 					'Customer-company_website', 'Item Attribute Value-awfis_centre', 'Item Attribute Value-col_break_1',
-					'Issue-awfis_channel', 'Communication-awfis_channel', 'Warehouse-awfis_warehouse_territory']]]},
+					'Issue-awfis_channel', 'Communication-awfis_channel', 'Warehouse-awfis_warehouse_territory',
+					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period']]]},
 			 "Property Setter",
 			 {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]}]
