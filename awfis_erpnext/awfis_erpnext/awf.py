@@ -250,3 +250,14 @@ def popuptest(caller_number, agent_number, call_id):
 # def regextest(caller_number):
 # 	cano = process_mobile_no(caller_number)
 # 	return "Raw: {r}, Processed: {p}".format(r=caller_number, p=cano)
+
+from erpnext.selling.page.sales_funnel.sales_funnel import get_funnel_data
+@frappe.whitelist()
+def awf_get_funnel_data(from_date, to_date):
+	guests = frappe.db.sql("""select count(*) from `tabAwfis Guest` 
+		where (date(`creation`) between %s and %s)
+		""", (from_date, to_date))[0][0]
+	ret = get_funnel_data(from_date, to_date)
+	ret_with_guests = [{ "title": _("Awfis Guest"), "value": guests, "color": "#FFFF15" }]
+	ret_with_guests += ret
+	return ret_with_guests
