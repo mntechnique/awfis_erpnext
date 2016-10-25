@@ -108,9 +108,10 @@ doc_events = {
 # Overriding Whitelisted Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "awfis_erpnext.event.get_events"
-# }
+override_whitelisted_methods = {
+ 	"erpnext.selling.page.sales_funnel.sales_funnel.get_funnel_data": "awfis_erpnext.awfis_erpnext.awf.awf_get_funnel_data"
+ }
+
 fixtures = ["Custom Script",
 			 {"dt": "Custom Field", "filters":[["name", "in", ['Purchase Order-awfis_warehouse',
 					'Lead-awfis_spaces', 'Lead-sb_spaces', 'Lead-lead_awfis_centres',
