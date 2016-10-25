@@ -260,4 +260,5 @@ def awf_get_funnel_data(from_date, to_date):
 	ret = get_funnel_data(from_date, to_date)
 	ret_with_guests = [{ "title": _("Awfis Guest"), "value": guests, "color": "#FFFF15" }]
 	ret_with_guests += ret
+	
 	return ret_with_guests
