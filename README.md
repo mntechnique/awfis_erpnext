@@ -1,6 +1,6 @@
 ## Awfis Erpnext
 
-ERPNext extensions and customization for Awfis Space Solutions Pvt. Ltd.
+ERPNext extension and customization for Awfis Space Solutions Pvt. Ltd.
 
 #### License
 
