@@ -131,4 +131,6 @@ fixtures = ["Custom Script",
 					'Issue-awfis_channel', 'Communication-awfis_channel', 'Warehouse-awfis_warehouse_territory',
 					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period']]]},
 			 "Property Setter",
-			 {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]}]
+			 {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
+			 {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
+			 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer"]]]}]
