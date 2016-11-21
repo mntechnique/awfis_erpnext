@@ -122,6 +122,7 @@ def create_popup(caller_number, agent_id, call_id):
 		ld.awfis_mobile_no = caller_number_processed
 		ld.source = "Other"
 		ld.awfis_lead_territory = "All Territories"
+		ld.lead_owner = agent_id
 
 		ld.insert(ignore_permissions=True)
 		frappe.db.commit()
