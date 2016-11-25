@@ -265,9 +265,18 @@ def awf_get_funnel_data(from_date, to_date):
 	return ret_with_guests
 
 @frappe.whitelist(allow_guest=True)
-def awf_create_lead(web_form, data):
-	import frappe.website.doctype.web_form.web_form.accept
-	ret = accept(web_form, data, False)
-	frappe.db.commit()
-	return ret
+def awf_create_lead(first_name, last_name, lead_name, awfis_mobile_no, source="SEM", awfis_lead_territory="All Territories", awfis_space_requirements_sem=None, awfis_location_sem=None):
+	ld = frappe.new_doc("Lead")
+	ld.first_name = first_name
+	ld.last_name = last_name
+	ld.lead_name = lead_name
+	ld.awfis_lead_territory = awfis_lead_territory
+	ld.awfis_mobile_no = awfis_mobile_no
+	ld.mobile_no = ld.awfis_mobile_no
+	ld.awfis_space_requirements_sem = awfis_space_requirements_sem  
+	ld.awfis_location_sem = awfis_location_sem
 
+	ld.save(ignore_permissions=True)
+	frappe.db.commit()
+
+	return ld.name + " created successfully"
