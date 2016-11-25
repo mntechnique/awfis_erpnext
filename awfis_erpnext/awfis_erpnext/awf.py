@@ -265,7 +265,7 @@ def awf_get_funnel_data(from_date, to_date):
 	return ret_with_guests
 
 @frappe.whitelist(allow_guest=True)
-def awf_create_lead(first_name, last_name, lead_name, awfis_mobile_no, source="SEM", awfis_lead_territory="All Territories", awfis_space_requirements_sem=None, awfis_location_sem=None):
+def awf_create_lead(first_name, last_name, lead_name, awfis_mobile_no, awfis_email_id, source="SEM", awfis_lead_territory="All Territories", awfis_space_requirements_sem=None, awfis_location_sem=None):
 	ld = frappe.new_doc("Lead")
 	ld.first_name = first_name
 	ld.last_name = last_name
