@@ -275,6 +275,7 @@ def awf_create_lead(first_name, last_name, lead_name, awfis_mobile_no, awfis_ema
 	ld.mobile_no = ld.awfis_mobile_no
 	ld.awfis_space_requirements_sem = awfis_space_requirements_sem  
 	ld.awfis_location_sem = awfis_location_sem
+	ld.source = source
 
 	ld.save(ignore_permissions=True)
 	frappe.db.commit()
