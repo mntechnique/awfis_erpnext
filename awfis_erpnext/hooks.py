@@ -109,7 +109,8 @@ doc_events = {
 # ------------------------------
 #
 override_whitelisted_methods = {
- 	"erpnext.selling.page.sales_funnel.sales_funnel.get_funnel_data": "awfis_erpnext.awfis_erpnext.awf.awf_get_funnel_data"
+ 	"erpnext.selling.page.sales_funnel.sales_funnel.get_funnel_data": "awfis_erpnext.awfis_erpnext.awf.awf_get_funnel_data",
+ 	"frappe.website.doctype.web_form.web_form.accept": "awfis_erpnext.awfis_erpnext.awf.awf_create_lead"
  }
 
 fixtures = ["Custom Script",
@@ -129,8 +130,8 @@ fixtures = ["Custom Script",
 					'Contact-col_break_custom_1', 'Contact-contact_type', 'Customer-number_of_employees', 'Customer-industry',
 					'Customer-company_website', 'Item Attribute Value-awfis_centre', 'Item Attribute Value-col_break_1',
 					'Issue-awfis_channel', 'Communication-awfis_channel', 'Warehouse-awfis_warehouse_territory',
-					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period', 
-					'Employee-awfis_employee_territory']]]},
+					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period',
+					'Employee-awfis_employee_territory', "Lead-lead_owner_centre", "Lead-awfis_space_requirements_sem"]]]},
 			 "Property Setter",
 			 {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
 			 {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
