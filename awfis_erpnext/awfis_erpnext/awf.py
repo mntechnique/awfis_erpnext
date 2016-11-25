@@ -122,6 +122,7 @@ def create_popup(caller_number, agent_id, call_id):
 		ld.awfis_mobile_no = caller_number_processed
 		ld.source = "Other"
 		ld.awfis_lead_territory = "All Territories"
+		ld.lead_owner = agent_id
 
 		ld.insert(ignore_permissions=True)
 		frappe.db.commit()
@@ -262,3 +263,11 @@ def awf_get_funnel_data(from_date, to_date):
 	ret_with_guests += ret
 	
 	return ret_with_guests
+
+@frappe.whitelist()
+def awf_create_lead(web_form, data):
+	import frappe.website.doctype.web_form.web_form.accept
+	ret = accept(web_form, data, False)
+	frappe.db.commit()
+	return ret
+
