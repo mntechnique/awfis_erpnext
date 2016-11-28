@@ -76,6 +76,9 @@ doc_events = {
 	},
 	"Purchase Receipt": {
 		"on_submit": "awfis_erpnext.awfis_erpnext.awf.validate_stock_entry"
+	},
+	"Lead": {
+		"after_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert"
 	}
 }
 
