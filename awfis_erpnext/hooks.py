@@ -117,10 +117,6 @@ override_whitelisted_methods = {
 
 fixtures = ["Custom Script",
 			 {"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Ops Manager"]]] },
-			 {"dt": "DocPerm", "filters":[
-			 	["role","in", ["Awfis Ops User", "Awfis Ops Manager"]], 
-			 	["docstatus", "<", 2], 
-			 	["parent", "=", "Lead"]] },
 			 {"dt": "Custom Field", "filters":[["name", "in", ['Purchase Order-awfis_warehouse',
 					'Lead-awfis_spaces', 'Lead-sb_spaces', 'Lead-lead_awfis_centres',
 					'Lead-section_break_centres', 'Lead-awfis_lead_channel', 'Lead-channel_partner',
