@@ -264,20 +264,43 @@ def awf_get_funnel_data(from_date, to_date):
 	
 	return ret_with_guests
 
-@frappe.whitelist(allow_guest=True)
-def awf_create_lead(first_name, last_name, lead_name, awfis_mobile_no, awfis_email_id, source="SEM", awfis_lead_territory="All Territories", awfis_space_requirements_sem=None, awfis_location_sem=None):
-	ld = frappe.new_doc("Lead")
-	ld.first_name = first_name
-	ld.last_name = last_name
-	ld.lead_name = lead_name
-	ld.awfis_lead_territory = awfis_lead_territory
-	ld.awfis_mobile_no = awfis_mobile_no
-	ld.mobile_no = ld.awfis_mobile_no
-	ld.awfis_space_requirements_sem = awfis_space_requirements_sem  
-	ld.awfis_location_sem = awfis_location_sem
-	ld.source = source
-
-	ld.save(ignore_permissions=True)
+@frappe.whitelist()
+def awf_create_lead(web_form, data):
+	import frappe.website.doctype.web_form.web_form.accept
+	ret = accept(web_form, data, False)
 	frappe.db.commit()
+	return ret
 
-	return ld.name + " created successfully"
+
+def awf_lead_after_insert(self, method):
+
+	#Assign Lead on update if not already assigned.
+	assignto = []
+
+	from frappe.desk.form import assign_to
+	users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": self.awfis_lead_territory, "parenttype": "User Permission"})
+	for user in users:
+		u = frappe.get_doc("User",user['parent'])
+		for role in u.user_roles:
+			if role.role == "Sales Manager":
+				assignto.append(u.name)
+
+	for assignee in assignto:
+		try:
+			assign_to.add({'assign_to':assignee,
+						'doctype':'Lead', 
+						'name':self.name, 
+						'description':'Lead {0} has been assigned to you.'.format(self.name)})
+			frappe.db.commit()
+		except Exception as e:
+			print e
+ 			
+
+def awf_lead_has_permission(doc, user):
+	u = frappe.get_doc("User", user)
+
+	roles = [ur.role for ur in u.user_roles if ur.role]
+
+	if ("Sales User" in roles) or ("Sales Manager" in roles) or ("Awfis Ops User" in roles) or ("Awfis Ops Manager" in roles):
+		return True	
+
