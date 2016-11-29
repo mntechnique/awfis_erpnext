@@ -62,9 +62,9 @@ notification_config = "awfis_erpnext.awfis_erpnext.awf.awfis_notification_filter
 # 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
 # }
 #
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+has_permission = {
+	"Lead": "awfis_erpnext.awfis_erpnext.awf.awf_lead_has_permission",
+}
 
 # Document Events
 # ---------------
@@ -116,6 +116,11 @@ override_whitelisted_methods = {
  }
 
 fixtures = ["Custom Script",
+			 {"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Ops Manager"]]] },
+			 {"dt": "DocPerm", "filters":[
+			 	["role","in", ["Awfis Ops User", "Awfis Ops Manager"]], 
+			 	["docstatus", "<", 2], 
+			 	["parent", "=", "Lead"]] },
 			 {"dt": "Custom Field", "filters":[["name", "in", ['Purchase Order-awfis_warehouse',
 					'Lead-awfis_spaces', 'Lead-sb_spaces', 'Lead-lead_awfis_centres',
 					'Lead-section_break_centres', 'Lead-awfis_lead_channel', 'Lead-channel_partner',

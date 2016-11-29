@@ -271,24 +271,36 @@ def awf_create_lead(web_form, data):
 	frappe.db.commit()
 	return ret
 
-@frappe.whitelist()
+
 def awf_lead_after_insert(self, method):
 
+	#Assign Lead on update if not already assigned.
 	assignto = []
 
 	from frappe.desk.form import assign_to
-	users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": lead.awfis_lead_territory, "parenttype": "User Permission"})
+	users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": self.awfis_lead_territory, "parenttype": "User Permission"})
 	for user in users:
 		u = frappe.get_doc("User",user['parent'])
 		for role in u.user_roles:
 			if role.role == "Sales Manager":
 				assignto.append(u.name)
-				return
 
-	for user in assignto:
+	for assignee in assignto:
 		try:
-			assign_to({'assign_to':user.user,'doctype':'Lead', 'name':self.name, 'description':'Lead {0} has been assigned to you.'.format(self.name)})
+			assign_to.add({'assign_to':assignee,
+						'doctype':'Lead', 
+						'name':self.name, 
+						'description':'Lead {0} has been assigned to you.'.format(self.name)})
 			frappe.db.commit()
 		except Exception as e:
- 				pass
-		
+			print e
+ 			
+
+def awf_lead_has_permission(doc, user):
+	u = frappe.get_doc("User", user)
+
+	roles = [ur.role for ur in u.user_roles if ur.role]
+
+	if ("Sales User" in roles) or ("Sales Manager" in roles) or ("Awfis Ops User" in roles) or ("Awfis Ops Manager" in roles):
+		return True	
+
