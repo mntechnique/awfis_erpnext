@@ -290,7 +290,8 @@ def awf_lead_after_insert(self, method):
 			assign_to.add({'assign_to':assignee,
 						'doctype':'Lead', 
 						'name':self.name, 
-						'description':'Lead {0} has been assigned to you.'.format(self.name)})
+						'description':'Lead {0} has been assigned to you.'.format(self.name),
+						'notify':True})
 			frappe.db.commit()
 		except Exception as e:
 			print e

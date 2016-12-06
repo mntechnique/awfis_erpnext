@@ -3,3 +3,4 @@ execute:import unidecode # new requirement
 execute:frappe.delete_doc("Property Setter", "Lead-territory-label")
 execute:frappe.delete_doc("Custom Field", "Lead-centre")
 execute:frappe.delete_doc("Property Setter", "Lead-territory-reqd")
+execute:frappe.delete_doc("Custom Field", "Sales Order-awfis_lead_source")
