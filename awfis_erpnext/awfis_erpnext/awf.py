@@ -6,6 +6,7 @@ import re #regular expressions
 from frappe.utils import flt, getdate, add_days, formatdate
 from  datetime import  timedelta
 from frappe.async import get_redis_server, get_user_room
+from frappe import share
 
 @frappe.whitelist()
 def check_duplicate_centres(docname):
@@ -123,7 +124,8 @@ def create_popup(caller_number, agent_id, call_id):
 		ld.source = "Other"
 		ld.awfis_lead_territory = "All Territories"
 		ld.lead_owner = agent_id
-
+		ld.owner = agent_id
+		frappe.set_user(agent_id)
 		ld.insert(ignore_permissions=True)
 		frappe.db.commit()
 	else:
@@ -274,33 +276,65 @@ def awf_create_lead(web_form, data):
 
 def awf_lead_after_insert(self, method):
 
-	#Assign Lead on update if not already assigned.
-	assignto = []
+	#If owner = Sales User, assign to self.
+	#If owner = Ops User, assign to RSM.
+	#print "Owner name", self.owner
+
+	owner = frappe.get_doc("User", self.owner)
+
+	#print "Owner object", owner
+
+	role_desc_list = [r.role for r in owner.user_roles]
+
 
 	from frappe.desk.form import assign_to
-	users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": self.awfis_lead_territory, "parenttype": "User Permission"})
-	for user in users:
-		u = frappe.get_doc("User",user['parent'])
-		for role in u.user_roles:
-			if role.role == "Sales Manager":
-				assignto.append(u.name)
+	
+	if "Awfis Ops User" in role_desc_list:
+		assignto = []
 
-	for assignee in assignto:
+		users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": self.awfis_lead_territory, "parenttype": "User Permission"})
+		for user in users:
+			u = frappe.get_doc("User",user['parent'])
+			for role in u.user_roles:
+				if role.role == "Sales Manager":
+					assignto.append(u.name)
+
+		for assignee in assignto:
+			try:
+				assign_to.add({'assign_to':assignee,
+							'doctype':'Lead', 
+							'name':self.name, 
+							'description':'Lead {0} has been assigned to you.'.format(self.name),
+							'notify':True})
+				frappe.db.commit()
+			except Exception as e:
+				print e
+			
+		share_with_self("Lead", self.name, self.owner)	
+
+	elif "Sales User" in role_desc_list:
 		try:
-			assign_to.add({'assign_to':assignee,
+			assign_to.add({'assign_to':self.owner,
 						'doctype':'Lead', 
 						'name':self.name, 
 						'description':'Lead {0} has been assigned to you.'.format(self.name),
 						'notify':True})
 			frappe.db.commit()
+
 		except Exception as e:
 			print e
- 			
+		
+		share_with_self("Lead", self.name, self.owner)
+
+
+def share_with_self(doctype, docname, owner):
+	share.add(doctype=doctype, name=docname, user=owner, read=1, write=1)
+	frappe.db.commit()
 
 def awf_lead_has_permission(doc, user):
 	u = frappe.get_doc("User", user)
 
-	roles = [ur.role for ur in u.user_roles if ur.role]
+	roles = [ur.role for ur in u.user_roles]
 
 	if ("Sales User" in roles) or ("Sales Manager" in roles) or ("Awfis Ops User" in roles) or ("Awfis Ops Manager" in roles):
 		return True	
