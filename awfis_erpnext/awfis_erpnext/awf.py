@@ -195,7 +195,7 @@ def validate_agent(agent_number):
 	if not agent_number_processed:
 		return ""
 
-	agents = frappe.get_all("User", fields=['name'], filters={"role": "Sales User", "phone": agent_number_processed})
+	agents = frappe.get_all("User", fields=['name'], filters={"role": "Awfis Ops User", "phone": agent_number_processed})
 
 	if len(agents) > 0:
 		return agents[0]["name"] #Return the name of the first agent.
@@ -337,5 +337,4 @@ def awf_lead_has_permission(doc, user):
 	roles = [ur.role for ur in u.user_roles]
 
 	if ("Sales User" in roles) or ("Sales Manager" in roles) or ("Awfis Ops User" in roles) or ("Awfis Ops Manager" in roles):
-		return True	
-
+		return True
