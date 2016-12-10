@@ -64,6 +64,7 @@ notification_config = "awfis_erpnext.awfis_erpnext.awf.awfis_notification_filter
 #
 has_permission = {
 	"Lead": "awfis_erpnext.awfis_erpnext.awf.awf_lead_has_permission",
+	"Awfis Centre": "awfis_erpnext.awfis_erpnext.awf.awf_lead_has_permission"
 }
 
 # Document Events
