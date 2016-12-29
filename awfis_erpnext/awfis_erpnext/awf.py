@@ -312,7 +312,7 @@ def awf_lead_after_insert(self, method):
 			
 		share_with_self("Lead", self.name, self.owner)	
 
-	elif "Sales User" in role_desc_list:
+	elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
 		try:
 			assign_to.add({'assign_to':self.owner,
 						'doctype':'Lead', 
@@ -324,7 +324,7 @@ def awf_lead_after_insert(self, method):
 		except Exception as e:
 			print e
 		
-		share_with_self("Lead", self.name, self.owner)
+		share_with_self("Lead", self.name, self.owner) #Share with self to allow editing while overriding territory restrictions.
 
 
 def share_with_self(doctype, docname, owner):

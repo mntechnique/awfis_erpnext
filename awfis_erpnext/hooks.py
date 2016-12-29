@@ -79,7 +79,8 @@ doc_events = {
 		"on_submit": "awfis_erpnext.awfis_erpnext.awf.validate_stock_entry"
 	},
 	"Lead": {
-		"after_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert"
+		"after_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert",
+		"on_update":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert"
 	}
 }
 
