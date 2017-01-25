@@ -12,7 +12,7 @@ frappe.ui.form.on('Awfis Report Processing Tool', {
 		if(!w) {
 			frappe.msgprint(__("Please enable pop-ups")); return;
 		}
+
+		frm.fields_dict.lead_report.clear_attachment();
 	}
-
-
 });

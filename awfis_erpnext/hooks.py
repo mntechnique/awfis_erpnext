@@ -136,8 +136,10 @@ fixtures = ["Custom Script",
 					'Customer-company_website', 'Item Attribute Value-awfis_centre', 'Item Attribute Value-col_break_1',
 					'Issue-awfis_channel', 'Communication-awfis_channel', 'Warehouse-awfis_warehouse_territory',
 					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period',
-					'Employee-awfis_employee_territory', "Lead-lead_owner_centre", "Lead-awfis_space_requirements_sem", "Lead-awfis_location_sem"]]]},
+					'Employee-awfis_employee_territory', "Lead-lead_owner_centre", "Lead-awfis_space_requirements_sem", "Lead-awfis_location_sem",
+					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent']]]},
 			 "Property Setter",
 			 {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
 			 {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
-			 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer"]]]}]
+			 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer", 
+			 		"Outdoor", "Online", "Marketing", "Referral"]]]}]
