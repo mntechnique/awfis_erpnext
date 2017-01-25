@@ -1912,7 +1912,7 @@
   "collapsible": 0, 
   "collapsible_depends_on": null, 
   "default": null, 
-  "depends_on": null, 
+  "depends_on": "", 
   "description": null, 
   "docstatus": 0, 
   "doctype": "Custom Field", 
