@@ -1462,7 +1462,7 @@
   "modified": "2016-06-21 12:13:38.919627", 
   "name": "Lead-awfis_lead_channel", 
   "no_copy": 0, 
-  "options": "Sales Team\nCall Centre\nCentre Walk-in", 
+  "options": "Sales Team\nCall Centre\nCentre Walk-in\nInbound", 
   "permlevel": 0, 
   "precision": "", 
   "print_hide": 0, 

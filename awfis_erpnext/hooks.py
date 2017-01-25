@@ -142,4 +142,6 @@ fixtures = ["Custom Script",
 			 {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
 			 {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
 			 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer", 
-			 		"Outdoor", "Online", "Marketing", "Referral"]]]}]
+			 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling", 
+			 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search", 
+			 		"Employee", "E-mail marketing"]]]}]
