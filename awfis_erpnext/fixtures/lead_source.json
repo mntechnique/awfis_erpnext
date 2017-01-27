@@ -169,5 +169,68 @@
   "modified": "2017-01-27 11:27:51.684013", 
   "name": "Returning Customer", 
   "source_name": "Returning Customer"
+ }, 
+ {
+  "awfis_lead_source_parent": null, 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 16:09:32.977533", 
+  "name": "NA", 
+  "source_name": "NA"
+ }, 
+ {
+  "awfis_lead_source_parent": null, 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 16:11:12.665466", 
+  "name": "Instant Office", 
+  "source_name": "Instant Office"
+ }, 
+ {
+  "awfis_lead_source_parent": "Broker", 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 16:54:18.556249", 
+  "name": "International Property Consultant", 
+  "source_name": "International Property Consultant"
+ }, 
+ {
+  "awfis_lead_source_parent": "Broker", 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 16:54:07.593626", 
+  "name": "Domestic Property Consultant", 
+  "source_name": "Domestic Property Consultant"
+ }, 
+ {
+  "awfis_lead_source_parent": null, 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 17:07:50.766358", 
+  "name": "Email", 
+  "source_name": "Email"
+ }, 
+ {
+  "awfis_lead_source_parent": "Email", 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 17:08:44.380133", 
+  "name": "contact@awfis.com", 
+  "source_name": "contact@awfis.com"
+ }, 
+ {
+  "awfis_lead_source_parent": "Email", 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 17:09:02.639270", 
+  "name": "info@awfis.com", 
+  "source_name": "info@awfis.com"
  }
 ]
