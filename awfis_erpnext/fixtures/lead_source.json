@@ -160,5 +160,14 @@
   "modified": "2017-01-25 17:41:35.302629", 
   "name": "Marketing", 
   "source_name": "Marketing"
+ }, 
+ {
+  "awfis_lead_source_parent": "", 
+  "details": null, 
+  "docstatus": 0, 
+  "doctype": "Lead Source", 
+  "modified": "2017-01-27 11:27:51.684013", 
+  "name": "Returning Customer", 
+  "source_name": "Returning Customer"
  }
 ]

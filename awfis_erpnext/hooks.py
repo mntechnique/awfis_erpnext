@@ -144,4 +144,4 @@ fixtures = ["Custom Script",
 			 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer", 
 			 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling", 
 			 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search", 
-			 		"Employee", "E-mail marketing"]]]}]
+			 		"Employee", "E-mail marketing", "Returning Customer"]]]}]
