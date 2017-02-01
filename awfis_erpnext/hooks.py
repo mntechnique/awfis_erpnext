@@ -80,7 +80,8 @@ doc_events = {
 	},
 	"Lead": {
 		"after_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert",
-		"on_update":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert"
+		"on_update":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert",
+		"before_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_before_insert"
 	}
 }
 
