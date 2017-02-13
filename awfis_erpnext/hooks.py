@@ -81,7 +81,7 @@ doc_events = {
 	"Lead": {
 		"after_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert",
 		"on_update":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert",
-		"validate":"awfis_erpnext.awfis_erpnext.awf.validate"
+		"validate":"awfis_erpnext.awfis_erpnext.awf.awf_lead_validate"
 	}
 }
 
