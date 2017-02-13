@@ -339,6 +339,6 @@ def awf_lead_has_permission(doc, user):
 	if ("Sales User" in roles) or ("Sales Manager" in roles) or ("Awfis Ops User" in roles) or ("Awfis Ops Manager" in roles):
 		return True
 
-def awf_lead_before_insert(self, method):
+def awf_lead_validate(self, method):
 	if self.source == "SEM":
 		self.awfis_lead_channel = "Inbound"
