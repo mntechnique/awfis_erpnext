@@ -276,7 +276,7 @@ def awf_create_lead(web_form, data):
 
 def awf_lead_after_insert(self, method):
 
-	assign_lead(self)
+	assign_and_share_lead(self)
 	# #If owner = Sales User, assign to self.
 	# #If owner = Ops User, assign to RSM.
 	# #print "Owner name", self.owner
@@ -346,7 +346,7 @@ def awf_lead_validate(self, method):
 
 def awf_lead_on_update(self, method):
 	#Assign lead to self.
-	assign_lead(self)
+	assign_and_share_lead(self)
 
 	#Append version history
 	awf_lead_append_version_history(self)
@@ -376,7 +376,7 @@ def awf_lead_append_version_history(lead_doc):
 
     	lead_doc.add_comment(text=comment_text)
 
-def assign_lead(lead):
+def assign_and_share_lead(lead):
 	owner = frappe.get_doc("User", lead.owner)
 
 	#print "Owner object", owner
@@ -397,28 +397,42 @@ def assign_lead(lead):
 					assignto.append(u.name)
 
 		for assignee in assignto:
-			try:
-				assign_to.add({'assign_to':assignee,
-							'doctype':'Lead', 
-							'name':lead.name, 
-							'description':'Lead {0} has been assigned to you.'.format(lead.name),
-							'notify':True})
-				frappe.db.commit()
-			except Exception as e:
-				print e
+			assign_lead(lead,assignee)
+		# 	try:
+		# 		assign_to.add({'assign_to':assignee,
+		# 					'doctype':'Lead', 
+		# 					'name':lead.name, 
+		# 					'description':'Lead {0} has been assigned to you.'.format(lead.name),
+		# 					'notify':True})
+		# 		frappe.db.commit()
+		# 	except Exception as e:
+		# 		print e
 			
-		share_with_self("Lead", lead.name, lead.owner)	
+		# share_with_self("Lead", lead.name, lead.owner)	
 
 	elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
-		try:
-			assign_to.add({'assign_to':lead.owner,
-						'doctype':'Lead', 
-						'name':lead.name, 
-						'description':'Lead {0} has been assigned to you.'.format(lead.name),
-						'notify':True})
-			frappe.db.commit()
+		assign_lead(lead,lead.owner)
+		# try:
+		# 	assign_to.add({'assign_to':lead.owner,
+		# 				'doctype':'Lead', 
+		# 				'name':lead.name, 
+		# 				'description':'Lead {0} has been assigned to you.'.format(lead.name),
+		# 				'notify':True})
+		# 	frappe.db.commit()
 
-		except Exception as e:
-			print e
+		# except Exception as e:
+		# 	print e
 		
-		share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
+	share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
+
+def assign_lead(lead,assignee):
+	try:
+		assign_to.add({'assign_to':assignee,
+					'doctype':'Lead', 
+					'name':lead.name, 
+					'description':'Lead {0} has been assigned to you.'.format(lead.name),
+					'notify':True})
+		frappe.db.commit()
+	except Exception as e:
+		print e
+
