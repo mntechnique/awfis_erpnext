@@ -1,5 +1,6 @@
 {
 	"js/awfis.min.js": [
-		"public/js/awfis.js"
+		"public/js/awfis.js",
+		"public/js/awfis_lead_list.html"
 	]
 }

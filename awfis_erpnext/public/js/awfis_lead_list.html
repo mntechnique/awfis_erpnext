@@ -1,0 +1,174 @@
+{% var data_grid_1 = lead_data["follow_up_today"]; %}
+{% var data_grid_2 = lead_data["assigned_to_me_open"]; %}
+{% var data_grid_3 = lead_data["other"]; %}
+
+<div class="row">
+	<div class="col-md-6 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<b>Follow-up Today</b>
+			</div>
+			<div class="result">
+				<div class="list-headers">
+					<div class="list-row list-row-head">
+						<div class="row doclist-row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-9 list-col ellipsis h6 text-muted col-xs-12">
+										<span>
+											Person Name
+										</span>
+									</div>
+									<div class="col-sm-3 list-col ellipsis h6 text-muted col-xs-12">
+										<span>
+											Status
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="result-list">
+					{% for(var i=0, j=data_grid_1.length; i<=j-1; i++) { %}
+					<div class="list-row">
+						<div class="row doclist-row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-9 list-col ellipsis col-xs-12">
+										<a href="/desk#Form/Lead/{{ data_grid_1[i].name }}">
+										<span class="bold">{%= data_grid_1[i].lead_name %}</span>
+										</a>
+										<span class="small text-muted">{%= data_grid_1.name %}</span>
+									</div>
+									<div class="col-sm-3 list-col ellipsis col-xs-12">
+										{%= data_grid_1[i].status %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% } %}
+					{% if (data_grid_1.length == 0) { %}
+					<div class="list-row">
+						<span class="text-center">No leads to show!</span>
+					</div>
+					{% } %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<b>Open Leads assigned to Me</b>
+			</div>
+			<div class="result">
+				<div class="list-headers">
+					<div class="list-row list-row-head">
+						<div class="row doclist-row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-9 list-col ellipsis h6 text-muted col-xs-12">
+										<span>
+											Person Name
+										</span>
+									</div>
+									<div class="col-sm-3 list-col ellipsis h6 text-muted col-xs-12">
+										<span>
+											Status
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="result-list">
+					{% for(var i=0, j=data_grid_2.length; i<=j-1; i++) { %}
+					<div class="list-row">
+						<div class="row doclist-row">
+							<div class="col-xs-10 col-sm-8 list-row-left">
+								<div class="row">
+									<div class="col-sm-9 list-col ellipsis col-xs-12">
+										<a href="/desk#Form/Lead/{{ data_grid_2[i].name }}">
+										<span class="bold">{%= data_grid_2[i].lead_name %}</span>
+										</a>
+										<span class="small text-muted">{%= data_grid_2.name %}</span>
+									</div>
+									<div class="col-sm-3 list-col ellipsis col-xs-12">
+										{%= data_grid_2[i].status %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% } %}
+					{% if (data_grid_2.length == 0) { %}
+					<div class="list-row text-center">
+						<span>No Leads to show.</span>
+					</div>
+					{% } %}
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<b>Leads sorted by Status</b>
+			</div>
+			<div class="result">
+				<div class="list-headers">
+					<div class="list-row list-row-head">
+						<div class="row doclist-row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-9 list-col ellipsis h6 text-muted col-xs-12">
+										<span>	
+											Person Name
+										</span>
+									</div>
+									<div class="col-sm-3 list-col ellipsis h6 text-muted col-xs-12">
+										<span>
+											Status
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="result-list">
+					{% for(var i=0, j=data_grid_3.length; i<=j-1; i++) { %}
+					<div class="list-row">
+						<div class="row doclist-row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-9 list-col ellipsis col-xs-12">
+										<a href="/desk#Form/Lead/{{ data_grid_3[i].name }}">
+										<span class="bold">{%= data_grid_3[i].lead_name %}</span>
+										</a>
+										<span class="small text-muted">{%= data_grid_3[i].name %}</span>
+									</div>
+									<div class="col-sm-3 list-col ellipsis col-xs-12">
+										{%= data_grid_3[i].status %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% } %}
+
+					{% if (data_grid_3.length == 0) { %}
+					<div class="list-row text-center">
+						<span>No leads to show.</span>
+					</div>
+					{% } %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
