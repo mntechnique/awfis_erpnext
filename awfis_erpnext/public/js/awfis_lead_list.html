@@ -6,7 +6,7 @@
 	<div class="col-md-6 col-xs-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<b>Follow-up Today</b>
+				<b>Follow-up Today ({%= data_grid_1.length %})</b>
 			</div>
 			<div class="result">
 				<div class="list-headers">
@@ -50,8 +50,8 @@
 					</div>
 					{% } %}
 					{% if (data_grid_1.length == 0) { %}
-					<div class="list-row">
-						<span class="text-center">No leads to show!</span>
+					<div class="list-row text-center">
+						<span>No Leads to follow-up today.</span>
 					</div>
 					{% } %}
 				</div>
@@ -61,7 +61,7 @@
 	<div class="col-md-6 col-xs-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<b>Open Leads assigned to Me</b>
+				<b>Open Leads assigned to Me ({%= data_grid_2.length %})</b>
 			</div>
 			<div class="result">
 				<div class="list-headers">
@@ -88,7 +88,7 @@
 					{% for(var i=0, j=data_grid_2.length; i<=j-1; i++) { %}
 					<div class="list-row">
 						<div class="row doclist-row">
-							<div class="col-xs-10 col-sm-8 list-row-left">
+							<div class="col-xs-12">
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis col-xs-12">
 										<a href="/desk#Form/Lead/{{ data_grid_2[i].name }}">
@@ -106,7 +106,7 @@
 					{% } %}
 					{% if (data_grid_2.length == 0) { %}
 					<div class="list-row text-center">
-						<span>No Leads to show.</span>
+						<span>No Leads assigned.</span>
 					</div>
 					{% } %}
 				</div>
@@ -118,7 +118,7 @@
 	<div class="col-xs-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<b>Leads sorted by Status</b>
+				<b>Leads sorted by Status ({%= data_grid_3.length %})</b>
 			</div>
 			<div class="result">
 				<div class="list-headers">
@@ -164,7 +164,7 @@
 
 					{% if (data_grid_3.length == 0) { %}
 					<div class="list-row text-center">
-						<span>No leads to show.</span>
+						<span>No Leads to show.</span>
 					</div>
 					{% } %}
 				</div>
