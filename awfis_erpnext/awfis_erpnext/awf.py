@@ -7,6 +7,7 @@ from frappe.utils import flt, getdate, add_days, formatdate
 from  datetime import  timedelta
 from frappe.async import get_redis_server, get_user_room
 from frappe import share
+from frappe.desk.form import assign_to
 
 @frappe.whitelist()
 def check_duplicate_centres(docname):
@@ -276,56 +277,56 @@ def awf_create_lead(web_form, data):
 
 def awf_lead_after_insert(self, method):
 
-	#If owner = Sales User, assign to self.
-	#If owner = Ops User, assign to RSM.
-	#print "Owner name", self.owner
+	assign_and_share_lead(self)
+	# #If owner = Sales User, assign to self.
+	# #If owner = Ops User, assign to RSM.
+	# #print "Owner name", self.owner
 
-	owner = frappe.get_doc("User", self.owner)
+	# owner = frappe.get_doc("User", self.owner)
 
-	#print "Owner object", owner
+	# #print "Owner object", owner
 
-	role_desc_list = [r.role for r in owner.user_roles]
+	# role_desc_list = [r.role for r in owner.user_roles]
 
 
-	from frappe.desk.form import assign_to
+	# from frappe.desk.form import assign_to
 	
-	if "Awfis Ops User" in role_desc_list:
-		assignto = []
+	# if "Awfis Ops User" in role_desc_list:
+	# 	assignto = []
 
-		users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": self.awfis_lead_territory, "parenttype": "User Permission"})
-		for user in users:
-			u = frappe.get_doc("User",user['parent'])
-			for role in u.user_roles:
-				if role.role == "Sales Manager":
-					assignto.append(u.name)
+	# 	users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": self.awfis_lead_territory, "parenttype": "User Permission"})
+	# 	for user in users:
+	# 		u = frappe.get_doc("User",user['parent'])
+	# 		for role in u.user_roles:
+	# 			if role.role == "Sales Manager":
+	# 				assignto.append(u.name)
 
-		for assignee in assignto:
-			try:
-				assign_to.add({'assign_to':assignee,
-							'doctype':'Lead', 
-							'name':self.name, 
-							'description':'Lead {0} has been assigned to you.'.format(self.name),
-							'notify':True})
-				frappe.db.commit()
-			except Exception as e:
-				print e
+	# 	for assignee in assignto:
+	# 		try:
+	# 			assign_to.add({'assign_to':assignee,
+	# 						'doctype':'Lead', 
+	# 						'name':self.name, 
+	# 						'description':'Lead {0} has been assigned to you.'.format(self.name),
+	# 						'notify':True})
+	# 			frappe.db.commit()
+	# 		except Exception as e:
+	# 			print e
 			
-		share_with_self("Lead", self.name, self.owner)	
+	# 	share_with_self("Lead", self.name, self.owner)	
 
-	elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
-		try:
-			assign_to.add({'assign_to':self.owner,
-						'doctype':'Lead', 
-						'name':self.name, 
-						'description':'Lead {0} has been assigned to you.'.format(self.name),
-						'notify':True})
-			frappe.db.commit()
+	# elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
+	# 	try:
+	# 		assign_to.add({'assign_to':self.owner,
+	# 					'doctype':'Lead', 
+	# 					'name':self.name, 
+	# 					'description':'Lead {0} has been assigned to you.'.format(self.name),
+	# 					'notify':True})
+	# 		frappe.db.commit()
 
-		except Exception as e:
-			print e
+	# 	except Exception as e:
+	# 		print e
 		
-		share_with_self("Lead", self.name, self.owner) #Share with self to allow editing while overriding territory restrictions.
-
+	# 	share_with_self("Lead", self.name, self.owner) #Share with self to allow editing while overriding territory restrictions.
 
 def share_with_self(doctype, docname, owner):
 	share.add(doctype=doctype, name=docname, user=owner, read=1, write=1)
@@ -340,5 +341,79 @@ def awf_lead_has_permission(doc, user):
 		return True
 
 def awf_lead_validate(self, method):
+	#Set channel as Inbound if source is SEM
 	if self.source == "SEM":
 		self.awfis_lead_channel = "Inbound"
+
+def awf_lead_on_update(self, method):
+	#Assign lead to self.
+	assign_and_share_lead(self)
+
+	#Append version history
+# 	awf_lead_append_version_history(self)
+
+# def awf_lead_append_version_history(lead_doc):
+# 	diffkeys = []
+# 	changes = []
+# 	#Append Lead Version history
+# 	frappe.add_version(lead_doc)
+
+# 	#Get Versions
+# 	versions = frappe.get_all("Version", filters={"docname": lead_doc.name}, fields=["name", "modified", "modified_by", "doclist_json"])
+
+# 	#Maintain change history if there are more than one.
+# 	if len(versions) > 1:
+# 		current_version = versions[len(versions)]
+# 		prev_version = versions[len(versions) - 1]
+
+# 		diffkeys = [k for k in current_version if prev_version[k] != current_version[k]]
+
+# 		changes = ["Modified by {0} on {1}".format(current_version["modified_by"], current_version["modified"])]
+
+#     	for k in diffkeys:
+#     		diffdesc = "{0}: '{1}' -> '{2}'".format(k, prev_version[k], current_version[k])
+#     		print diffdesc
+#     		changes.append(diffdesc)
+
+#     	comment_text = "\n".join(changes)
+
+#     	lead_doc.add_comment(text=comment_text)
+
+def assign_and_share_lead(lead):
+	owner = frappe.get_doc("User", lead.owner)
+
+	role_desc_list = [r.role for r in owner.user_roles]
+
+	if "Awfis Ops User" in role_desc_list:
+		assignees = []	
+		users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": lead.awfis_lead_territory, "parenttype": "User Permission"})
+	
+		for user in users:
+			u = frappe.get_doc("User",user['parent'])
+			for role in u.user_roles:
+				if role.role == "Sales Manager":
+					assignees.append(u.name)		
+
+		for assignee in assignees:
+			assign_lead(lead,assignee)
+
+	elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
+		assign_lead(lead,lead.owner)
+		
+	share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
+
+def assign_lead(lead,assignee):
+	dnd_list = frappe.get_all("Awfis DND User", fields=["awfis_dnd_user"])
+	if assignee not in [u['awfis_dnd_user'] for u in dnd_list]:
+		open_todo = frappe.get_all("ToDo", filters={"reference_type":lead.doctype,"reference_name":lead.name,"owner":assignee,"status":"Open"})
+		if len(open_todo)== 0 :
+			try:
+				assign_to.add({'assign_to':assignee,
+							'doctype':'Lead', 
+							'name':lead.name, 
+							'description':'Lead {0} has been assigned to you.'.format(lead.name),
+							'notify':True})
+				frappe.db.commit()
+			except Exception as e:
+				print e
+
