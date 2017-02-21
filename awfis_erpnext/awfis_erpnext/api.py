@@ -73,3 +73,19 @@ def get_lead_list_data(limit=20):
 	})
 
 	return out
+
+
+@frappe.whitelist()
+def lookup_lead(caller_number):
+	print "Caller Number", caller_number
+
+	lead_by_phone_no = frappe.get_all("Lead", filters={"phone":caller_number}, fields=["*"])
+	if len(lead_by_phone_no) > 0:
+		return lead_by_phone_no[0].name
+		
+	lead_by_mobile_no = frappe.get_all("Lead", filters={"awfis_mobile_no":caller_number}, fields=["*"])
+	if len(lead_by_mobile_no) > 0:
+		return lead_by_mobile_no[0].name
+
+	return "New Lead"
+	
