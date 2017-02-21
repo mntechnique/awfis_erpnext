@@ -29,6 +29,12 @@ def get_data():
 					"name": "Awfis Guest",
 					"label": "Awfis Guest",
 					"description": _("Awfis Guest"),
+				},
+				{
+					"type": "page",
+					"name": "awfis_lead_lookup",
+					"label": "Lead Lookup",
+					"description": _("Look up record for Lead by caller number and navigate to it."),
 				},	
 			]
 		},
