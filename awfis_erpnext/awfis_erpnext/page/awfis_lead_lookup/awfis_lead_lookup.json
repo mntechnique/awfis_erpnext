@@ -1,0 +1,34 @@
+{
+ "content": null, 
+ "creation": "2017-02-20 13:18:33.733505", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "idx": 0, 
+ "modified": "2017-02-20 13:18:33.733505", 
+ "modified_by": "Administrator", 
+ "module": "Awfis Erpnext", 
+ "name": "awfis_lead_lookup", 
+ "owner": "Administrator", 
+ "page_name": "awfis_lead_lookup", 
+ "roles": [
+  {
+   "role": "Sales User"
+  }, 
+  {
+   "role": "Sales Manager"
+  }, 
+  {
+   "role": "Awfis Ops User"
+  }, 
+  {
+   "role": "Awfis Ops Manager"
+  }, 
+  {
+   "role": "System Manager"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "title": "Lead Lookup"
+}
