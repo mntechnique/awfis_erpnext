@@ -397,10 +397,11 @@ def assign_and_share_lead(lead):
 		for assignee in assignees:
 			assign_lead(lead,assignee)
 
+		share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
 	elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
 		assign_lead(lead,lead.owner)
 		
-	share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
+		share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
 
 def assign_lead(lead,assignee):
 	dnd_list = frappe.get_all("Awfis DND User", fields=["awfis_dnd_user"])
