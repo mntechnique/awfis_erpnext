@@ -29,7 +29,7 @@ def get_filedata(file_name, options=None):
 		cleanup(fname)
 	print filedata
 	return filedata
-	
+
 def cleanup(fname):
 	if os.path.exists(fname):
 		os.remove(fname)
@@ -39,6 +39,7 @@ def get_lead_list_data(limit=20):
 	user = frappe.get_doc("User", frappe.session.user)
 	
 	assigned_to_user = frappe.get_all("ToDo", filters={"owner": frappe.session.user, "reference_type": "Lead"}, fields=["reference_name"])
+
 	assigned_to_user = [l.get("reference_name") for l in assigned_to_user]	
 
 	roles_by_user = [u.role for u in user.user_roles]
@@ -58,15 +59,16 @@ def get_lead_list_data(limit=20):
 
 		allowed_territories_list = [at["defvalue"] for at in allowed_territories]
 
-		follow_up_today = frappe.db.sql("""SELECT * FROM tabLead WHERE date(contact_date) = curdate() 
+		follow_up_today = frappe.db.sql("""SELECT * FROM tabLead WHERE date(contact_date) = curdate()
 											and awfis_lead_territory in ({territories}) ORDER BY name DESC LIMIT {limit}"""
 											.format(
 												limit=limit,
-												territories= ",".join(["'" + at + "'" for at in allowed_territories_list]) 
+												territories= ",".join(["'" + at + "'" for at in allowed_territories_list])
 											), as_dict=True)
 		
 		assigned_to_me_open = frappe.get_all("Lead", filters=[["name", "in", assigned_to_user], ["status", "=", "Open"], ["_comments", "=", None]], fields=["*"], limit=limit)
 		other = frappe.get_all("Lead", filters=[["awfis_lead_territory", "in", allowed_territories_list], ["name", "in", assigned_to_user]], fields=["*"], order_by="lead_state, contact_date DESC", limit=limit)
+
 	out = frappe._dict({
 		"follow_up_today": follow_up_today,
 		"assigned_to_me_open": assigned_to_me_open,
@@ -77,16 +79,16 @@ def get_lead_list_data(limit=20):
 
 
 @frappe.whitelist()
-def lookup_lead(caller_number):
+def lookup_lead(caller_number=None):
+	#return caller_number
 	print "Caller Number", caller_number
 
 	lead_by_phone_no = frappe.get_all("Lead", filters={"phone":caller_number}, fields=["*"])
 	if len(lead_by_phone_no) > 0:
 		return lead_by_phone_no[0].name
-		
+
 	lead_by_mobile_no = frappe.get_all("Lead", filters={"awfis_mobile_no":caller_number}, fields=["*"])
 	if len(lead_by_mobile_no) > 0:
 		return lead_by_mobile_no[0].name
 
 	return "New Lead"
-	
