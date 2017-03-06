@@ -8,6 +8,7 @@ from  datetime import  timedelta
 from frappe.async import get_redis_server, get_user_room
 from frappe import share
 from frappe.desk.form import assign_to
+import json
 
 @frappe.whitelist()
 def check_duplicate_centres(docname):
@@ -350,34 +351,45 @@ def awf_lead_on_update(self, method):
 	assign_and_share_lead(self)
 
 	#Append version history
-# 	awf_lead_append_version_history(self)
+	comment_text = awf_lead_append_version_history(self)
+	#self.awfis_lead_edits_history = comment_text
 
-# def awf_lead_append_version_history(lead_doc):
-# 	diffkeys = []
-# 	changes = []
-# 	#Append Lead Version history
-# 	frappe.add_version(lead_doc)
 
-# 	#Get Versions
-# 	versions = frappe.get_all("Version", filters={"docname": lead_doc.name}, fields=["name", "modified", "modified_by", "doclist_json"])
+	if comment_text:
+		self.add_comment("Comment", text=comment_text)
 
-# 	#Maintain change history if there are more than one.
-# 	if len(versions) > 1:
-# 		current_version = versions[len(versions)]
-# 		prev_version = versions[len(versions) - 1]
+def awf_lead_append_version_history(lead_doc):
+	diffkeys = []
+	changes = []
+	
+	#Append Lead Version history
+	frappe.add_version(lead_doc)
 
-# 		diffkeys = [k for k in current_version if prev_version[k] != current_version[k]]
+	#Get Versions
+	versions = frappe.get_all("Version", filters={"docname": lead_doc.name}, fields=["name", "modified", "modified_by", "doclist_json"], order_by="modified")
 
-# 		changes = ["Modified by {0} on {1}".format(current_version["modified_by"], current_version["modified"])]
+	#Maintain change history if there are more than one.
+	if len(versions) > 1:
+		current_version = versions[len(versions) - 1]
+		prev_version = versions[len(versions) - 2]
 
-#     	for k in diffkeys:
-#     		diffdesc = "{0}: '{1}' -> '{2}'".format(k, prev_version[k], current_version[k])
-#     		print diffdesc
-#     		changes.append(diffdesc)
+		current_doclist_json = json.loads(current_version["doclist_json"])
+		prev_doclist_json = json.loads(prev_version["doclist_json"])
 
-#     	comment_text = "\n".join(changes)
+		diffkeys = [k for k in current_doclist_json if prev_doclist_json[k] != current_doclist_json[k]]
+		changes = ["Modified by {0} on {1}".format(current_version["modified_by"], current_version["modified"])]
+		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by"]]
 
-#     	lead_doc.add_comment(text=comment_text)
+		for k in diffkeys:
+			diffdesc = "{0}: <br> '{1}' <br> '{2}'".format(k, prev_doclist_json[k], current_doclist_json[k])
+			changes.append("\n" + diffdesc)
+			
+		comment_text = "\n".join(changes)
+
+		return comment_text
+	else:
+		return ""
+
 
 def assign_and_share_lead(lead):
 	owner = frappe.get_doc("User", lead.owner)
@@ -400,7 +412,7 @@ def assign_and_share_lead(lead):
 		share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
 	elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
 		assign_lead(lead,lead.owner)
-		
+			
 		share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
 
 def assign_lead(lead,assignee):
