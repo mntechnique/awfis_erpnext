@@ -351,12 +351,10 @@ def awf_lead_on_update(self, method):
 	assign_and_share_lead(self)
 
 	#Append version history
-	comment_text = awf_lead_append_version_history(self)
+	#comment_text = awf_lead_append_version_history(self)
 	#self.awfis_lead_edits_history = comment_text
-
-
-	if comment_text:
-		self.add_comment("Comment", text=comment_text)
+	# if comment_text:
+	# 	self.add_comment("Comment", text=comment_text)
 
 def awf_lead_append_version_history(lead_doc):
 	diffkeys = []
