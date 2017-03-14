@@ -9,6 +9,7 @@ from frappe.async import get_redis_server, get_user_room
 from frappe import share
 from frappe.desk.form import assign_to
 import json
+from dateutil import tz
 
 @frappe.whitelist()
 def check_duplicate_centres(docname):
@@ -351,10 +352,30 @@ def awf_lead_on_update(self, method):
 	assign_and_share_lead(self)
 
 	#Append version history
-	#comment_text = awf_lead_append_version_history(self)
-	#self.awfis_lead_edits_history = comment_text
-	# if comment_text:
-	# 	self.add_comment("Comment", text=comment_text)
+	comment_text = awf_lead_append_version_history(self)
+	self.awfis_lead_edits_history = comment_text
+
+	if comment_text:
+		#self.add_comment("Comment", text=comment_text)
+
+		notif_text =  "<div class='text-muted'>"
+		notif_text += "<div class='small text-muted'>"
+		notif_text +=  comment_text
+		notif_text += '</div>'
+		notif_text += '</div>'
+
+		notif = frappe.new_doc("Communication")
+		notif.subject = "Lead edits made by {0}".format(frappe.session.user)
+		notif.owner = frappe.session.user
+		notif.communication_type = "Communication"
+		notif.content = notif_text
+		notif.status = "Linked"
+		notif.sent_or_received = "Sent"
+		notif.reference_doctype = "Lead"
+		notif.reference_name = self.name
+
+		notif.insert(ignore_permissions=True)
+		frappe.db.commit()
 
 def awf_lead_append_version_history(lead_doc):
 	diffkeys = []
@@ -374,15 +395,48 @@ def awf_lead_append_version_history(lead_doc):
 		current_doclist_json = json.loads(current_version["doclist_json"])
 		prev_doclist_json = json.loads(prev_version["doclist_json"])
 
-		diffkeys = [k for k in current_doclist_json if prev_doclist_json[k] != current_doclist_json[k]]
-		changes = ["Modified by {0} on {1}".format(current_version["modified_by"], current_version["modified"])]
-		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by"]]
 
-		for k in diffkeys:
-			diffdesc = "{0}: <br> '{1}' <br> '{2}'".format(k, prev_doclist_json[k], current_doclist_json[k])
-			changes.append("\n" + diffdesc)
+		diffkeys = [k for k in current_doclist_json if (k in prev_doclist_json and k in current_doclist_json) and (prev_doclist_json[k] != current_doclist_json[k])]
+
+		changes = []
+		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "lead_awfis_centres"]]
+
+		comment_text = None
+
+		if len(diffkeys) > 0:
+			changes.append("<ul>")
 			
-		comment_text = "\n".join(changes)
+			for k in diffkeys:
+
+				changed_field = frappe.get_meta("Lead").get_field(k) 
+				changed_field_value = None
+
+				#TODO: Handle Tables
+				
+					# tablekeys = [tk for tk in current_doclist_json[k] if tk not in ["modified", "modified_by"]]
+					
+					# print "Tablekeys", tablekeys
+
+					# diff_tablekeys = [dk for dk in current_doclist_json[k] if (dk in prev_doclist_json[k] and dk in current_doclist_json[k]) and (prev_doclist_json[k][dk] != current_doclist_json[k][dk])]					
+	
+					# changed_field_value_list = []
+					# for dtk in diff_tablekeys:
+					# 	changed_field_value_list.append(current_doclist_json[k])
+
+					# changed_field_value = "<br>" + ", ".join(changed_field_value_list)
+					# 	changed_field_value = "<br>" + "<br>".join([", ".join(str(v) for v in row.values()) for row in ])
+				#else:
+				changed_field_value = current_doclist_json[k]
+
+				diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
+				
+				changes.append("<li>" + diffdesc + "</li>")
+			
+			changes.append("</ul>")
+			
+			changes.append("- by {0} on {1}".format(current_version["modified_by"], frappe.utils.datetime.datetime.strftime(frappe.utils.get_datetime(current_version["modified"]), "%d-%b-%Y %H:%M")))
+
+			comment_text = "".join(changes)
 
 		return comment_text
 	else:
