@@ -395,17 +395,41 @@ def awf_lead_append_version_history(lead_doc):
 		current_doclist_json = json.loads(current_version["doclist_json"])
 		prev_doclist_json = json.loads(prev_version["doclist_json"])
 
-		diffkeys = [k for k in current_doclist_json if prev_doclist_json[k] != current_doclist_json[k]]
+
+		diffkeys = [k for k in current_doclist_json if (k in prev_doclist_json and k in current_doclist_json) and (prev_doclist_json[k] != current_doclist_json[k])]
 
 		changes = []
-		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by"]]
+		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "lead_awfis_centres"]]
 
 		comment_text = None
 
 		if len(diffkeys) > 0:
 			changes.append("<ul>")
+			
 			for k in diffkeys:
-				diffdesc = "'{0}' changed from '{1}' to '{2}'".format(frappe.get_meta("Lead").get_field(k).label, prev_doclist_json[k] or 'blank', current_doclist_json[k] or 'blank')
+
+				changed_field = frappe.get_meta("Lead").get_field(k) 
+				changed_field_value = None
+
+				#TODO: Handle Tables
+				
+					# tablekeys = [tk for tk in current_doclist_json[k] if tk not in ["modified", "modified_by"]]
+					
+					# print "Tablekeys", tablekeys
+
+					# diff_tablekeys = [dk for dk in current_doclist_json[k] if (dk in prev_doclist_json[k] and dk in current_doclist_json[k]) and (prev_doclist_json[k][dk] != current_doclist_json[k][dk])]					
+	
+					# changed_field_value_list = []
+					# for dtk in diff_tablekeys:
+					# 	changed_field_value_list.append(current_doclist_json[k])
+
+					# changed_field_value = "<br>" + ", ".join(changed_field_value_list)
+					# 	changed_field_value = "<br>" + "<br>".join([", ".join(str(v) for v in row.values()) for row in ])
+				#else:
+				changed_field_value = current_doclist_json[k]
+
+				diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
+				
 				changes.append("<li>" + diffdesc + "</li>")
 			
 			changes.append("</ul>")

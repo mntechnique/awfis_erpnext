@@ -118,7 +118,7 @@ override_whitelisted_methods = {
  	"erpnext.selling.page.sales_funnel.sales_funnel.get_funnel_data": "awfis_erpnext.awfis_erpnext.awf.awf_get_funnel_data"
  }
 
-fixtures = ["Custom Script",
+fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "Material Request-Client", "Item Attribute-Client", "Customer-Client", "Contact-Client"]]]},
 			 {"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Ops Manager"]]] },
 			 {"dt": "Custom Field", "filters":[["name", "in", ['Purchase Order-awfis_warehouse',
 					'Lead-awfis_spaces', 'Lead-sb_spaces', 'Lead-lead_awfis_centres',
@@ -139,12 +139,12 @@ fixtures = ["Custom Script",
 					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period',
 					'Employee-awfis_employee_territory', "Lead-lead_owner_centre", "Lead-awfis_space_requirements_sem", "Lead-awfis_location_sem",
 					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent']]]},
-			 "Property Setter",
-			 {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
-			 {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
-			 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer", 
-			 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling", 
-			 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search", 
-			 		"Employee", "E-mail marketing", "Returning Customer", "NA", "Instant Office",
-			 		"International Property Consultant", "Domestic Property Consultant", "Email", "info@awfis.com", 
-			 		"info@awfis.com", "contact@awfis.com"]]]}]
+			 "Property Setter"]
+			 # {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
+			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
+			 # 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer", 
+			 # 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling", 
+			 # 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search", 
+			 # 		"Employee", "E-mail marketing", "Returning Customer", "NA", "Instant Office",
+			 # 		"International Property Consultant", "Domestic Property Consultant", "Email", "info@awfis.com", 
+			 # 		"info@awfis.com", "contact@awfis.com"]]]}]
