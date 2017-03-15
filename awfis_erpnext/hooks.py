@@ -126,7 +126,7 @@ fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "M
 					'Lead-online_listing', 'Lead-alt_mobile_no_1', 'Lead-alt_mobile_no_2', 'Lead-social_media', 'Lead-reason_lost_or_on_hold',
 					'Lead-lead_state', 'Lead-site_visited', 'Lead-awfis_company_website',
 					'Lead-awfis_email_id', 'Lead-awfis_lead_territory', 'Lead-awfis_mobile_no',
-					'Lead-last_name', 'Lead-first_name', 'Opportunity-priority', 'Opportunity-complaint_issue',
+					'Lead-last_name', 'Lead-first_name', 'Lead-awfis_lead_details', 'Opportunity-priority', 'Opportunity-complaint_issue',
 					'Opportunity-opportunity_awfis_centres', 'Opportunity-reason_lost_or_on_hold',
 					'Opportunity-awfis_lead_territory', 'Opportunity-awfis_lead_channel', 'Sales Order-awfis_booking_id',
 					'Sales Order-mode_of_payment', 'Sales Order-discount_coupon', 'Sales Order-centre',
