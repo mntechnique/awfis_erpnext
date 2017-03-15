@@ -399,7 +399,7 @@ def awf_lead_append_version_history(lead_doc):
 		diffkeys = [k for k in current_doclist_json if (k in prev_doclist_json and k in current_doclist_json) and (prev_doclist_json[k] != current_doclist_json[k])]
 
 		changes = []
-		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "lead_awfis_centres"]]
+		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "awfis_lead_details"]]
 
 		comment_text = None
 
