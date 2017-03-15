@@ -2050,7 +2050,11 @@
   "doctype": "Property Setter", 
   "doctype_or_field": "DocType", 
   "field_name": null, 
+<<<<<<< HEAD
   "modified": "2017-03-15 15:38:44.327977", 
+=======
+  "modified": "2017-03-15 01:19:01.666348", 
+>>>>>>> 11feaeac006c8cf4b82f094cb83d9b349b185bf1
   "name": "Lead-read_only_onload", 
   "property": "read_only_onload", 
   "property_type": "Check", 
