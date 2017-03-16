@@ -396,10 +396,10 @@ def awf_lead_append_version_history(lead_doc):
 		prev_doclist_json = json.loads(prev_version["doclist_json"])
 
 
-		diffkeys = [k for k in current_doclist_json if (k in prev_doclist_json and k in current_doclist_json) and (prev_doclist_json[k] != current_doclist_json[k])]
+		diffkeys = [k for k in current_doclist_json if ((k in prev_doclist_json) and (k in current_doclist_json)) and (prev_doclist_json[k] != current_doclist_json[k])]
 
 		changes = []
-		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "awfis_lead_details"]]
+		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "awfis_lead_details", "idx"]]
 
 		comment_text = None
 
@@ -407,6 +407,8 @@ def awf_lead_append_version_history(lead_doc):
 			changes.append("<ul>")
 			
 			for k in diffkeys:
+
+				print "Key", k
 
 				changed_field = frappe.get_meta("Lead").get_field(k) 
 				changed_field_value = None
