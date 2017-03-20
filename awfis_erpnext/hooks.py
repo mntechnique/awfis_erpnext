@@ -81,7 +81,8 @@ doc_events = {
 	"Lead": {
 		"after_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert",
 		"on_update":"awfis_erpnext.awfis_erpnext.awf.awf_lead_on_update",
-		"validate":"awfis_erpnext.awfis_erpnext.awf.awf_lead_validate"
+		"validate":"awfis_erpnext.awfis_erpnext.awf.awf_lead_validate",
+		"before_save":"awfis_erpnext.awfis_erpnext.awf.awf_lead_before_save"
 	}
 }
 
@@ -141,10 +142,10 @@ fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "M
 					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent']]]},
 			 "Property Setter"]
 			 # {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
-			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
-			 # 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer", 
-			 # 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling", 
-			 # 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search", 
+			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC",
+			 # 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer",
+			 # 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling",
+			 # 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search",
 			 # 		"Employee", "E-mail marketing", "Returning Customer", "NA", "Instant Office",
-			 # 		"International Property Consultant", "Domestic Property Consultant", "Email", "info@awfis.com", 
+			 # 		"International Property Consultant", "Domestic Property Consultant", "Email", "info@awfis.com",
 			 # 		"info@awfis.com", "contact@awfis.com"]]]}]
