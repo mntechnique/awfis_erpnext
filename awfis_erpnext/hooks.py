@@ -139,7 +139,8 @@ fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "M
 					'Issue-awfis_channel', 'Communication-awfis_channel', 'Warehouse-awfis_warehouse_territory',
 					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period',
 					'Employee-awfis_employee_territory', "Lead-lead_owner_centre", "Lead-awfis_space_requirements_sem", "Lead-awfis_location_sem",
-					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent', 'Lead-sb-awfis-lead-details']]]},
+					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent', 'Lead-sb_awfis_lead_details',
+					'Lead-awfis_lead_is_repeat_customer']]]},
 			 "Property Setter"]
 			 # {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
 			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC",

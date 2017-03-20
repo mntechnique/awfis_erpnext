@@ -399,43 +399,49 @@ def awf_lead_append_version_history(lead_doc):
 		diffkeys = [k for k in current_doclist_json if ((k in prev_doclist_json) and (k in current_doclist_json)) and (prev_doclist_json[k] != current_doclist_json[k])]
 
 		changes = []
-		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "awfis_lead_details", "idx"]]
+		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "idx"]]
 
 		comment_text = None
 
 		if len(diffkeys) > 0:
-			changes.append("<ul>")
-
 			for k in diffkeys:
-
-				print "Key", k
-
 				changed_field = frappe.get_meta("Lead").get_field(k)
-				changed_field_value = None
-
-				#TODO: Handle Tables
-
-					# tablekeys = [tk for tk in current_doclist_json[k] if tk not in ["modified", "modified_by"]]
-
-					# print "Tablekeys", tablekeys
-
-					# diff_tablekeys = [dk for dk in current_doclist_json[k] if (dk in prev_doclist_json[k] and dk in current_doclist_json[k]) and (prev_doclist_json[k][dk] != current_doclist_json[k][dk])]
-
-					# changed_field_value_list = []
-					# for dtk in diff_tablekeys:
-					# 	changed_field_value_list.append(current_doclist_json[k])
-
-					# changed_field_value = "<br>" + ", ".join(changed_field_value_list)
-					# 	changed_field_value = "<br>" + "<br>".join([", ".join(str(v) for v in row.values()) for row in ])
-				#else:
 				changed_field_value = current_doclist_json[k]
 
-				diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
+				if changed_field:
+					diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
+					changes.append("<li>" + diffdesc + "</li>")
 
-				changes.append("<li>" + diffdesc + "</li>")
+				# print "Different Key", k
+				# changed_field = frappe.get_meta("Lead").get_field(k)
+				# changed_field_value = None
 
+				# #TODO: Handle Tables
+				# if changed_field:
+				# 	if changed_field.fieldtype == "Table":
+				# 		#tablekeys = [tk for tk in current_doclist_json[k][0].keys() if tk not in ["modified", "modified_by"]]
+				# 		keys = frappe.get_all("DocField", {"fieldname": changed_field.name})
+
+				# 	#diff_tablekeys = [dk for dk in current_doclist_json[k] if (dk in prev_doclist_json[k] and dk in current_doclist_json[k]) and (prev_doclist_json[k][dk] != current_doclist_json[k][dk])]
+
+				# 		for x in xrange(1,10):
+				# 			print "Tablekeys", tablekeys
+				# 	#print "Diff Tablekeys", diff_tablekeys
+
+				# 	# changed_field_value_list = []
+				# 	# for dtk in diff_tablekeys:
+				# 	#  	changed_field_value_list.append(current_doclist_json[k])
+
+				# 	# changed_field_value = "<br>" + ", ".join(changed_field_value_list)
+				# 	# changed_field_value = "<br>" + "<br>".join([", ".join(str(v) for v in row.values()) for row in ])
+				# 	else:
+				# 		changed_field_value = current_doclist_json[k]
+				# 		diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
+				# 		changes.append("<li>" + diffdesc + "</li>")
+			
+
+			changes = ["<ul>"] + changes
 			changes.append("</ul>")
-
 			changes.append("- by {0} on {1}".format(current_version["modified_by"], frappe.utils.datetime.datetime.strftime(frappe.utils.get_datetime(current_version["modified"]), "%d-%b-%Y %H:%M")))
 
 			comment_text = "".join(changes)
@@ -490,28 +496,31 @@ def awf_lead_before_save(self, method):
 	save_requirement_history(self)
 
 def save_requirement_history(lead_doc):
-	centres = lead_doc.lead_awfis_centres
-	spaces = lead_doc.awfis_spaces
+	if len(lead_doc.lead_awfis_centres) > 0 and (lead_doc.awfis_spaces) > 0 and \
+		frappe.utils.getdate(lead_doc.creation) >= frappe.utils.datetime.date(2017,03,16):
 
-	requirement = []
-	for centre in centres:
-		for space in spaces:
-			lead_doc.append("awfis_lead_details", {
-			"city": centre.centre_city,
-			"center": centre.centre,
-			"lead_channel": lead_doc.awfis_lead_channel,
-			"lead_source": lead_doc.source,
-			"lead_sub_source": lead_doc.awfis_lead_sub_source,
-			"lead_campaign": lead_doc.campaign_name,
-			"lead_channel_partner": lead_doc.channel_partner,
-			"lead_state": lead_doc.lead_state,
-			"space_type": space.space_type,
-			"capacity": space.capacity,
-			"qty": space.qty,
-			"tenure": space.tenure,
-			"tenure_qty": space.tenure_qty,
-			"requirement_date": frappe.utils.datetime.datetime.now()
-		  })
+		centres = lead_doc.lead_awfis_centres
+		spaces = lead_doc.awfis_spaces
 
-  	lead_doc.lead_awfis_centres = []
-  	lead_doc.awfis_spaces = []
+		requirement = []
+		for centre in centres:
+			for space in spaces:
+				lead_doc.append("awfis_lead_details", {
+				"city": centre.centre_city,
+				"center": centre.centre,
+				"lead_channel": lead_doc.awfis_lead_channel,
+				"lead_source": lead_doc.source,
+				"lead_sub_source": lead_doc.awfis_lead_sub_source,
+				"lead_campaign": lead_doc.campaign_name,
+				"lead_channel_partner": lead_doc.channel_partner,
+				"lead_state": lead_doc.lead_state,
+				"space_type": space.space_type,
+				"capacity": space.capacity,
+				"qty": space.qty,
+				"tenure": space.tenure,
+				"tenure_qty": space.tenure_qty,
+				"requirement_date": frappe.utils.datetime.datetime.now()
+			  })
+
+  		lead_doc.lead_awfis_centres = []
+  		lead_doc.awfis_spaces = []
