@@ -81,7 +81,8 @@ doc_events = {
 	"Lead": {
 		"after_insert":"awfis_erpnext.awfis_erpnext.awf.awf_lead_after_insert",
 		"on_update":"awfis_erpnext.awfis_erpnext.awf.awf_lead_on_update",
-		"validate":"awfis_erpnext.awfis_erpnext.awf.awf_lead_validate"
+		"validate":"awfis_erpnext.awfis_erpnext.awf.awf_lead_validate",
+		"before_save":"awfis_erpnext.awfis_erpnext.awf.awf_lead_before_save"
 	}
 }
 
@@ -122,7 +123,7 @@ fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "M
 			 {"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Ops Manager"]]] },
 			 {"dt": "Custom Field", "filters":[["name", "in", ['Purchase Order-awfis_warehouse',
 					'Lead-awfis_spaces', 'Lead-sb_spaces', 'Lead-lead_awfis_centres',
-					'Lead-section_break_centres', 'Lead-awfis_lead_channel', 'Lead-channel_partner',
+					'Lead-section_break_centres','Lead-awfis_requirement_history','Lead-awfis_lead_channel', 'Lead-channel_partner',
 					'Lead-online_listing', 'Lead-alt_mobile_no_1', 'Lead-alt_mobile_no_2', 'Lead-social_media', 'Lead-reason_lost_or_on_hold',
 					'Lead-lead_state', 'Lead-site_visited', 'Lead-awfis_company_website',
 					'Lead-awfis_email_id', 'Lead-awfis_lead_territory', 'Lead-awfis_mobile_no',
@@ -138,13 +139,14 @@ fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "M
 					'Issue-awfis_channel', 'Communication-awfis_channel', 'Warehouse-awfis_warehouse_territory',
 					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period',
 					'Employee-awfis_employee_territory', "Lead-lead_owner_centre", "Lead-awfis_space_requirements_sem", "Lead-awfis_location_sem",
-					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent']]]},
+					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent', 'Lead-sb_awfis_lead_details',
+					'Lead-awfis_lead_is_repeat_customer']]]},
 			 "Property Setter"]
 			 # {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
-			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC", 
-			 # 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer", 
-			 # 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling", 
-			 # 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search", 
+			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC",
+			 # 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer",
+			 # 		"Outdoor", "Online", "Marketing", "Referral", "Signage", "Hoarding", "Events", "Cold Calling",
+			 # 		"Website", "Friend/Colleague", "Advertising", "Client", "Google Search",
 			 # 		"Employee", "E-mail marketing", "Returning Customer", "NA", "Instant Office",
-			 # 		"International Property Consultant", "Domestic Property Consultant", "Email", "info@awfis.com", 
+			 # 		"International Property Consultant", "Domestic Property Consultant", "Email", "info@awfis.com",
 			 # 		"info@awfis.com", "contact@awfis.com"]]]}]

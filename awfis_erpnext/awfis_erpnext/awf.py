@@ -76,7 +76,7 @@ def validate_stock_entry(self, method):
 
 			if expiry_warning_period and item.batch_no: #Without batch no, validation goes through.
 				expiry_date = frappe.db.get_value('Batch', item.batch_no, 'expiry_date')
-				
+
 				if (getdate(expiry_date) - frappe.utils.datetime.date.today()).days <= expiry_warning_period:
 					frappe.throw(_("Row {0}: Item {1} cannot be issued. Batch {2} for selected item is about to expire.".format(item.idx, item.item_name, item.batch_no)))
 
@@ -260,13 +260,13 @@ def popuptest(caller_number, agent_number, call_id):
 from erpnext.selling.page.sales_funnel.sales_funnel import get_funnel_data
 @frappe.whitelist()
 def awf_get_funnel_data(from_date, to_date):
-	guests = frappe.db.sql("""select count(*) from `tabAwfis Guest` 
+	guests = frappe.db.sql("""select count(*) from `tabAwfis Guest`
 		where (date(`creation`) between %s and %s)
 		""", (from_date, to_date))[0][0]
 	ret = get_funnel_data(from_date, to_date)
 	ret_with_guests = [{ "title": _("Awfis Guest"), "value": guests, "color": "#FFFF15" }]
 	ret_with_guests += ret
-	
+
 	return ret_with_guests
 
 @frappe.whitelist()
@@ -292,7 +292,7 @@ def awf_lead_after_insert(self, method):
 
 
 	# from frappe.desk.form import assign_to
-	
+
 	# if "Awfis Ops User" in role_desc_list:
 	# 	assignto = []
 
@@ -306,28 +306,28 @@ def awf_lead_after_insert(self, method):
 	# 	for assignee in assignto:
 	# 		try:
 	# 			assign_to.add({'assign_to':assignee,
-	# 						'doctype':'Lead', 
-	# 						'name':self.name, 
+	# 						'doctype':'Lead',
+	# 						'name':self.name,
 	# 						'description':'Lead {0} has been assigned to you.'.format(self.name),
 	# 						'notify':True})
 	# 			frappe.db.commit()
 	# 		except Exception as e:
 	# 			print e
-			
-	# 	share_with_self("Lead", self.name, self.owner)	
+
+	# 	share_with_self("Lead", self.name, self.owner)
 
 	# elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
 	# 	try:
 	# 		assign_to.add({'assign_to':self.owner,
-	# 					'doctype':'Lead', 
-	# 					'name':self.name, 
+	# 					'doctype':'Lead',
+	# 					'name':self.name,
 	# 					'description':'Lead {0} has been assigned to you.'.format(self.name),
 	# 					'notify':True})
 	# 		frappe.db.commit()
 
 	# 	except Exception as e:
 	# 		print e
-		
+
 	# 	share_with_self("Lead", self.name, self.owner) #Share with self to allow editing while overriding territory restrictions.
 
 def share_with_self(doctype, docname, owner):
@@ -380,7 +380,7 @@ def awf_lead_on_update(self, method):
 def awf_lead_append_version_history(lead_doc):
 	diffkeys = []
 	changes = []
-	
+
 	#Append Lead Version history
 	frappe.add_version(lead_doc)
 
@@ -399,43 +399,49 @@ def awf_lead_append_version_history(lead_doc):
 		diffkeys = [k for k in current_doclist_json if ((k in prev_doclist_json) and (k in current_doclist_json)) and (prev_doclist_json[k] != current_doclist_json[k])]
 
 		changes = []
-		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "awfis_lead_details", "idx"]]
+		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "idx"]]
 
 		comment_text = None
 
 		if len(diffkeys) > 0:
-			changes.append("<ul>")
-			
 			for k in diffkeys:
-
-				print "Key", k
-
-				changed_field = frappe.get_meta("Lead").get_field(k) 
-				changed_field_value = None
-
-				#TODO: Handle Tables
-				
-					# tablekeys = [tk for tk in current_doclist_json[k] if tk not in ["modified", "modified_by"]]
-					
-					# print "Tablekeys", tablekeys
-
-					# diff_tablekeys = [dk for dk in current_doclist_json[k] if (dk in prev_doclist_json[k] and dk in current_doclist_json[k]) and (prev_doclist_json[k][dk] != current_doclist_json[k][dk])]					
-	
-					# changed_field_value_list = []
-					# for dtk in diff_tablekeys:
-					# 	changed_field_value_list.append(current_doclist_json[k])
-
-					# changed_field_value = "<br>" + ", ".join(changed_field_value_list)
-					# 	changed_field_value = "<br>" + "<br>".join([", ".join(str(v) for v in row.values()) for row in ])
-				#else:
+				changed_field = frappe.get_meta("Lead").get_field(k)
 				changed_field_value = current_doclist_json[k]
 
-				diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
-				
-				changes.append("<li>" + diffdesc + "</li>")
+				if changed_field:
+					diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
+					changes.append("<li>" + diffdesc + "</li>")
+
+				# print "Different Key", k
+				# changed_field = frappe.get_meta("Lead").get_field(k)
+				# changed_field_value = None
+
+				# #TODO: Handle Tables
+				# if changed_field:
+				# 	if changed_field.fieldtype == "Table":
+				# 		#tablekeys = [tk for tk in current_doclist_json[k][0].keys() if tk not in ["modified", "modified_by"]]
+				# 		keys = frappe.get_all("DocField", {"fieldname": changed_field.name})
+
+				# 	#diff_tablekeys = [dk for dk in current_doclist_json[k] if (dk in prev_doclist_json[k] and dk in current_doclist_json[k]) and (prev_doclist_json[k][dk] != current_doclist_json[k][dk])]
+
+				# 		for x in xrange(1,10):
+				# 			print "Tablekeys", tablekeys
+				# 	#print "Diff Tablekeys", diff_tablekeys
+
+				# 	# changed_field_value_list = []
+				# 	# for dtk in diff_tablekeys:
+				# 	#  	changed_field_value_list.append(current_doclist_json[k])
+
+				# 	# changed_field_value = "<br>" + ", ".join(changed_field_value_list)
+				# 	# changed_field_value = "<br>" + "<br>".join([", ".join(str(v) for v in row.values()) for row in ])
+				# 	else:
+				# 		changed_field_value = current_doclist_json[k]
+				# 		diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
+				# 		changes.append("<li>" + diffdesc + "</li>")
 			
+
+			changes = ["<ul>"] + changes
 			changes.append("</ul>")
-			
 			changes.append("- by {0} on {1}".format(current_version["modified_by"], frappe.utils.datetime.datetime.strftime(frappe.utils.get_datetime(current_version["modified"]), "%d-%b-%Y %H:%M")))
 
 			comment_text = "".join(changes)
@@ -451,14 +457,14 @@ def assign_and_share_lead(lead):
 	role_desc_list = [r.role for r in owner.user_roles]
 
 	if "Awfis Ops User" in role_desc_list:
-		assignees = []	
+		assignees = []
 		users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": lead.awfis_lead_territory, "parenttype": "User Permission"})
-	
+
 		for user in users:
 			u = frappe.get_doc("User",user['parent'])
 			for role in u.user_roles:
 				if role.role == "Sales Manager":
-					assignees.append(u.name)		
+					assignees.append(u.name)
 
 		for assignee in assignees:
 			assign_lead(lead,assignee)
@@ -466,7 +472,7 @@ def assign_and_share_lead(lead):
 		share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
 	elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
 		assign_lead(lead,lead.owner)
-			
+
 		share_with_self("Lead", lead.name, lead.owner) #Share with self to allow editing while overriding territory restrictions.
 
 def assign_lead(lead,assignee):
@@ -476,11 +482,45 @@ def assign_lead(lead,assignee):
 		if len(open_todo)== 0 :
 			try:
 				assign_to.add({'assign_to':assignee,
-							'doctype':'Lead', 
-							'name':lead.name, 
+							'doctype':'Lead',
+							'name':lead.name,
 							'description':'Lead {0} has been assigned to you.'.format(lead.name),
 							'notify':True})
 				frappe.db.commit()
 			except Exception as e:
 				print e
 
+
+
+def awf_lead_before_save(self, method):
+	save_requirement_history(self)
+
+def save_requirement_history(lead_doc):
+	if len(lead_doc.lead_awfis_centres) > 0 and (lead_doc.awfis_spaces) > 0 and \
+		frappe.utils.getdate(lead_doc.creation) >= frappe.utils.datetime.date(2017,03,16):
+
+		centres = lead_doc.lead_awfis_centres
+		spaces = lead_doc.awfis_spaces
+
+		requirement = []
+		for centre in centres:
+			for space in spaces:
+				lead_doc.append("awfis_lead_details", {
+				"city": centre.centre_city,
+				"center": centre.centre,
+				"lead_channel": lead_doc.awfis_lead_channel,
+				"lead_source": lead_doc.source,
+				"lead_sub_source": lead_doc.awfis_lead_sub_source,
+				"lead_campaign": lead_doc.campaign_name,
+				"lead_channel_partner": lead_doc.channel_partner,
+				"lead_state": lead_doc.lead_state,
+				"space_type": space.space_type,
+				"capacity": space.capacity,
+				"qty": space.qty,
+				"tenure": space.tenure,
+				"tenure_qty": space.tenure_qty,
+				"requirement_date": frappe.utils.datetime.datetime.now()
+			  })
+
+  		lead_doc.lead_awfis_centres = []
+  		lead_doc.awfis_spaces = []

@@ -9,8 +9,8 @@ def get_data():
 				{
 					"type": "doctype",
 					"name": "Lead",
-					"label": "Leads",
-					"description": _("Lead."),
+					"label": "Lead List",
+					"description": _("ERPNext\'s default List of Leads"),
 				},
 				{
 					"type": "page",
