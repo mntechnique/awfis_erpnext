@@ -496,31 +496,30 @@ def awf_lead_before_save(self, method):
 	save_requirement_history(self)
 
 def save_requirement_history(lead_doc):
-	if len(lead_doc.lead_awfis_centres) > 0 and (lead_doc.awfis_spaces) > 0 and \
-		frappe.utils.getdate(lead_doc.creation) >= frappe.utils.datetime.date(2017,03,16):
+	if (lead_doc.awfis_spaces) > 0 and frappe.utils.getdate(lead_doc.creation) >= frappe.utils.datetime.date(2017,03,16):
 
-		centres = lead_doc.lead_awfis_centres
+		#centres = lead_doc.lead_awfis_centres
 		spaces = lead_doc.awfis_spaces
 
 		requirement = []
-		for centre in centres:
-			for space in spaces:
-				lead_doc.append("awfis_lead_details", {
-				"city": centre.centre_city,
-				"center": centre.centre,
-				"lead_channel": lead_doc.awfis_lead_channel,
-				"lead_source": lead_doc.source,
-				"lead_sub_source": lead_doc.awfis_lead_sub_source,
-				"lead_campaign": lead_doc.campaign_name,
-				"lead_channel_partner": lead_doc.channel_partner,
-				"lead_state": lead_doc.lead_state,
-				"space_type": space.space_type,
-				"capacity": space.capacity,
-				"qty": space.qty,
-				"tenure": space.tenure,
-				"tenure_qty": space.tenure_qty,
-				"requirement_date": frappe.utils.datetime.datetime.now()
-			  })
+		
+		for space in spaces:
+			lead_doc.append("awfis_lead_details", {
+			"city": frappe.db.get_value("Awfis Centre", space.centre, "city"),
+			"center": space.centre,
+			"lead_channel": lead_doc.awfis_lead_channel,
+			"lead_source": lead_doc.source,
+			"lead_sub_source": lead_doc.awfis_lead_sub_source,
+			"lead_campaign": lead_doc.campaign_name,
+			"lead_channel_partner": lead_doc.channel_partner,
+			"lead_state": lead_doc.lead_state,
+			"space_type": space.space_type,
+			"capacity": space.capacity,
+			"qty": space.qty,
+			"tenure": space.tenure,
+			"tenure_qty": space.tenure_qty,
+			"requirement_date": frappe.utils.datetime.datetime.now()
+		  })
 
   		lead_doc.lead_awfis_centres = []
   		lead_doc.awfis_spaces = []
