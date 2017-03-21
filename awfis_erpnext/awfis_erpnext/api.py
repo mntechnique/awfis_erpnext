@@ -54,16 +54,21 @@ def get_lead_list_data(limit=20):
 	
 		other = frappe.get_all("Lead", filters=[["name", "in", assigned_to_user]], order_by="lead_state, contact_date DESC", limit=limit)
 
-	elif "Sales Manager" in roles_by_user or "Sales User" in roles_by_user or "Awfis Ops User" in roles_by_user:
+	elif "Sales Manager" in roles_by_user or "Sales User" in roles_by_user or "Awfis Ops User" in roles_by_user or "Awfis Ops Manager" in roles_by_user:
 		allowed_territories = frappe.get_all("DefaultValue", fields=["defvalue"], filters={"defkey": "Territory", "parenttype": "User Permission", "parent":frappe.session.user})
-
 		allowed_territories_list = [at["defvalue"] for at in allowed_territories]
 
+		territories_clause = ""
+		if len(allowed_territories_list):
+			territories_string = ",".join(["'" + at + "'" for at in allowed_territories_list])
+			territories_clause = " AND awfis_lead_territory in ({0}) ".format(territories_string)
+
+		
 		follow_up_today = frappe.db.sql("""SELECT * FROM tabLead WHERE date(contact_date) = curdate()
-											and awfis_lead_territory in ({territories}) ORDER BY name DESC LIMIT {limit}"""
+											{territories_clause} ORDER BY name DESC LIMIT {limit}"""
 											.format(
 												limit=limit,
-												territories= ",".join(["'" + at + "'" for at in allowed_territories_list])
+												territories_clause= territories_clause
 											), as_dict=True)
 		
 		assigned_to_me_open = frappe.get_all("Lead", filters=[["name", "in", assigned_to_user], ["status", "=", "Open"], ["_comments", "=", None]], fields=["*"], limit=limit)
