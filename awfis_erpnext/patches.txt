@@ -4,3 +4,5 @@ execute:frappe.delete_doc("Property Setter", "Lead-territory-label")
 execute:frappe.delete_doc("Custom Field", "Lead-centre")
 execute:frappe.delete_doc("Property Setter", "Lead-territory-reqd")
 execute:frappe.delete_doc("Custom Field", "Sales Order-awfis_lead_source")
+
+awfis_erpnext.patches.v1_7_16.make_lead_awfis_spaces_editable
