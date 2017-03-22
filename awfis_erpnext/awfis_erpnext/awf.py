@@ -521,5 +521,5 @@ def save_requirement_history(lead_doc):
 			"requirement_date": frappe.utils.datetime.datetime.now()
 		  })
 
-  		lead_doc.lead_awfis_centres = []
+  		#lead_doc.lead_awfis_centres = []
   		lead_doc.awfis_spaces = []
