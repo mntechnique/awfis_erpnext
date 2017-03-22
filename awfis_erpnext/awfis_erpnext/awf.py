@@ -347,6 +347,25 @@ def awf_lead_validate(self, method):
 	if self.source == "SEM":
 		self.awfis_lead_channel = "Inbound"
 
+	for space_lineitem in self.awfis_spaces:
+	    if space_lineitem.centre=="":
+			frappe.throw(_("Please provide the centre for Lead in Space Requirements"))
+
+	    elif(
+	    		space_lineitem.space_type!=""
+	    	and 
+	    		(
+	    			space_lineitem.capacity<1
+	    		or  space_lineitem.qty<1
+	    		or  space_lineitem.tenure==""
+	    		or  space_lineitem.tenure_qty<1
+	    		)
+	    	):
+			frappe.throw(_("Space Type needs a valid entry for succeeding fields"))
+    	
+    	else:
+			save_requirement_history(self)
+
 def awf_lead_on_update(self, method):
 	#Assign lead to self.
 	assign_and_share_lead(self)
