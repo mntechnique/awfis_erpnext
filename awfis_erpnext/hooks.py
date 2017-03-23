@@ -123,7 +123,7 @@ fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "M
 			 {"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Ops Manager"]]] },
 			 {"dt": "Custom Field", "filters":[["name", "in", ['Purchase Order-awfis_warehouse',
 					'Lead-awfis_spaces', 'Lead-sb_spaces', 'Lead-lead_awfis_centres',
-					'Lead-section_break_centres','Lead-awfis_requirement_history','Lead-awfis_lead_channel', 'Lead-channel_partner',
+					'Lead-section_break_centres','Lead-awfis_lead_channel', 'Lead-channel_partner',
 					'Lead-online_listing', 'Lead-alt_mobile_no_1', 'Lead-alt_mobile_no_2', 'Lead-social_media', 'Lead-reason_lost_or_on_hold',
 					'Lead-lead_state', 'Lead-site_visited', 'Lead-awfis_company_website',
 					'Lead-awfis_email_id', 'Lead-awfis_lead_territory', 'Lead-awfis_mobile_no',
