@@ -348,22 +348,22 @@ def awf_lead_validate(self, method):
 		self.awfis_lead_channel = "Inbound"
 
 	for space_lineitem in self.awfis_spaces:
-	    if space_lineitem.centre=="":
-			frappe.throw(_("Please provide the centre for Lead in Space Requirements"))
+		if space_lineitem.centre == None or space_lineitem.centre == "":
+			frappe.throw(_("Row #{0}: Please set Centre in Space Requirements".format(space_lineitem.idx)))
 
-	    elif(
-	    		space_lineitem.space_type!=""
-	    	and 
-	    		(
-	    			space_lineitem.capacity<1
-	    		or  space_lineitem.qty<1
-	    		or  space_lineitem.tenure==""
-	    		or  space_lineitem.tenure_qty<1
-	    		)
-	    	):
-			frappe.throw(_("Space Type needs a valid entry for succeeding fields"))
-    	
-    	else:
+		elif(
+				space_lineitem.space_type!=""
+			and 
+				(
+					space_lineitem.capacity<1
+				or  space_lineitem.qty<1
+				or  space_lineitem.tenure==""
+				or  space_lineitem.tenure_qty<1
+				)
+			):
+			frappe.throw(_("Row #{0}: Please ensure that Capacity, Qty, Tenure and Tenure Qty have valid values".format(space_lineitem.idx)))
+		
+		else:
 			save_requirement_history(self)
 
 def awf_lead_on_update(self, method):
@@ -540,5 +540,5 @@ def save_requirement_history(lead_doc):
 			"requirement_date": frappe.utils.datetime.datetime.now()
 		  })
 
-  		#lead_doc.lead_awfis_centres = []
-  		lead_doc.awfis_spaces = []
+		#lead_doc.lead_awfis_centres = []
+		lead_doc.awfis_spaces = []
