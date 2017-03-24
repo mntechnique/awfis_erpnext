@@ -365,6 +365,8 @@ def awf_lead_validate(self, method):
 		
 		else:
 			save_requirement_history(self)
+			if len(self.awfis_lead_details)>1:
+			    self.awfis_lead_is_repeat_customer="Yes"
 
 def awf_lead_on_update(self, method):
 	#Assign lead to self.
