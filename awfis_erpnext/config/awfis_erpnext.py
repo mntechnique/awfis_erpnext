@@ -7,16 +7,16 @@ def get_data():
 			"icon": "icon-star",
 			"items": [
 				{
-					"type": "doctype",
-					"name": "Lead",
-					"label": "Lead List",
-					"description": _("ERPNext\'s default List of Leads"),
-				},
-				{
 					"type": "page",
 					"name": "awfis_lead_list",
 					"label": "Lead Dashboard",
 					"description": _("Dashboard with actionable grids for Lead."),
+				},
+				{
+					"type": "doctype",
+					"name": "Lead",
+					"label": "Lead List",
+					"description": _("ERPNext\'s default List of Leads"),
 				},
 				{
 					"type": "doctype",
