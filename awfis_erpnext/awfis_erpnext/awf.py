@@ -370,6 +370,10 @@ def awf_lead_validate(self, method):
 	if len(self.awfis_lead_details)>1:
 		self.awfis_lead_is_repeat_customer="Yes"
 
+	#Assign lead to Next Contact By if set.
+	if self.contact_by:
+		assign_lead(self, self.contact_by)
+
 
 def awf_lead_on_update(self, method):
 	#Assign lead to self.
