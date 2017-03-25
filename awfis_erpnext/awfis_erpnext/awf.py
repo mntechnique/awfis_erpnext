@@ -366,6 +366,15 @@ def awf_lead_validate(self, method):
 		else:
 			save_requirement_history(self)
 
+	#Set repeat customer if no of lead details goes above 1.
+	if len(self.awfis_lead_details)>1:
+		self.awfis_lead_is_repeat_customer="Yes"
+
+	#Assign lead to Next Contact By if set.
+	if self.contact_by:
+		assign_lead(self, self.contact_by)
+
+
 def awf_lead_on_update(self, method):
 	#Assign lead to self.
 	assign_and_share_lead(self)
@@ -509,10 +518,8 @@ def assign_lead(lead,assignee):
 			except Exception as e:
 				print e
 
-
-
 def awf_lead_before_save(self, method):
-	save_requirement_history(self)
+ 	pass
 
 def save_requirement_history(lead_doc):
 	if (lead_doc.awfis_spaces) > 0 and frappe.utils.getdate(lead_doc.creation) >= frappe.utils.datetime.date(2017,03,16):
