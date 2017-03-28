@@ -57,7 +57,7 @@ def get_lead_list_data():
 					distinct=True)
 		team = [tm.parent for tm in team]
 
-		print "TEAM", team
+		#print "TEAM", team
 		
 		follow_up_today = [l for l in all_leads if
 							(l.contact_date and frappe.utils.getdate(l.contact_date) == frappe.utils.getdate()) and
@@ -91,7 +91,8 @@ def get_lead_list_data():
 								(l._assign and len([assignee for assignee in ast.literal_eval(l._assign) if assignee in team]) > 0)
 							)
 						]
-		#other_leads.sort(key=lambda l: (l.contact_date))
+		# other_leads.sort(key=lambda l: -(l.contact_date or None))
+
 	elif "Sales User" in user_roles or "Awfis Ops User" in user_roles:
 		follow_up_today = [l for l in all_leads if
 							(l.contact_date and frappe.utils.getdate(l.contact_date) == frappe.utils.getdate()) and
@@ -132,7 +133,8 @@ def get_lead_list_data():
 							)
 						]
 
-		other_leads.sort(key=lambda l: (l.contact_date))
+		# other_leads.sort(key=lambda l: (l.contact_date))
+
 
 
 	return {"follow_up_today": follow_up_today, "open_leads":open_leads, "other_leads": other_leads}

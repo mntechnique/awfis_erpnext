@@ -14,15 +14,17 @@
 						<div class="row doclist-row">
 							<div class="col-xs-12">
 								<div class="row">
-									<div class="col-xs-6 list-col ellipsis h6 text-muted">
-										<span>
-											Person Name
-										</span>
+									<div class="col-sm-9 list-col ellipsis h6 text-muted col-xs-12">
+										<div class="row">
+											<div class="col-xs-6">Person</div>
+											<div class="col-xs-4">Mobile No</div>
+											<div class="col-xs-2">Status</div>
+										</div>
 									</div>
-									<div class="col-xs-6 list-col ellipsis h6 text-muted">
-										<span>
-											Status
-										</span>
+									<div class="col-sm-3 list-col ellipsis h6 text-muted col-xs-12">
+										<div class="row">
+											<div class="col-xs-12"></div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -35,16 +37,24 @@
 						<div class="row doclist-row">
 							<div class="col-xs-12">
 								<div class="row">
-									<div class="col-xs-6 list-col ellipsis">
-										<a href="/desk#Form/Lead/{{ data_grid_1[i].name }}">
-										<span class="bold">{%= data_grid_1[i].lead_name %}</span>
-										</a>
-										<span class="small text-muted">{%= data_grid_1.name %}</span>
+									<div class="col-sm-9 list-col ellipsis col-xs-12">
+										<div class="row">
+											<div class="col-sm-6 ellipsis" title="{%= data_grid_1[i].lead_name %}, {%= data_grid_1[i].lead_name %}">
+											<a class="bold" href="/desk#Form/Lead/{{ data_grid_1[i].name }}">{%= data_grid_1[i].lead_name %}</a>
+											<span class="small text-muted ellipsis">{%= data_grid_1[i].awfis_lead_territory %}</span>
+											</div>
+											<div class="col-sm-4"><span class="small">{%= data_grid_1[i].mobile_no %}</span></div>
+											<div class="col-sm-2"><span class="small">{%= data_grid_1[i].status %}</span></div>
+										</div>
 									</div>
-									<div class="col-xs-6 list-col ellipsis">
-										{%= data_grid_1[i].status %}
-
-										<span class="">{%= data_grid_1[i].status %}</span>										
+									<div class="col-sm-3 list-col ellipsis col-xs-12">
+										<span class="text-muted" title="{%= data_grid_1[i].creation %}">
+											{% var pd = prettyDate(data_grid_1[i].creation, 1); %}
+											{%= pd %}
+										</span>
+										<span class="text-muted">
+											
+										</span>
 									</div>
 								</div>
 							</div>
@@ -73,14 +83,14 @@
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis h6 text-muted col-xs-12">
 										<div class="row">
-											<div class="col-sm-4">Person</div>
-											<div class="col-sm-4">Mobile No</div>
-											<div class="col-sm-4">Status</div>
+											<div class="col-xs-6">Person</div>
+											<div class="col-xs-4">Mobile No</div>
+											<div class="col-xs-2">Status</div>
 										</div>
 									</div>
 									<div class="col-sm-3 list-col ellipsis h6 text-muted col-xs-12">
 										<div class="row">
-											<div class="col-sm-4"></div>
+											<div class="col-xs-12"></div>
 										</div>
 									</div>
 								</div>
@@ -96,13 +106,16 @@
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis col-xs-12">
 										<div class="row">
-											<div class="col-sm-4 ellipsis"><a  class="bold" href="/desk#Form/Lead/{{ data_grid_2[i].name }}">{%= data_grid_2[i].lead_name %}</a></div>
+											<div class="col-sm-6 ellipsis" title="{%= data_grid_2[i].lead_name %}, {%= data_grid_2[i].territory %}">
+												<a  class="bold" href="/desk#Form/Lead/{{ data_grid_2[i].name }}">{%= data_grid_2[i].lead_name %}</a>
+												<span class="small text-muted ellipsis">{%= data_grid_2[i].territory %}</span>
+											</div>
 											<div class="col-sm-4"><span class="small">{%= data_grid_2[i].mobile_no %}</span></div>
-											<div class="col-sm-4"><span class="small">{%= data_grid_2[i].status %}</span></div>
+											<div class="col-sm-2"><span class="small">{%= data_grid_2[i].status %}</span></div>
 										</div>
 									</div>
 									<div class="col-sm-3 list-col ellipsis col-xs-12">
-										<span class="text-muted">
+										<span class="text-muted" title="{%= data_grid_2[i].creation %}">
 											{% var pd = prettyDate(data_grid_2[i].creation, 1); %}
 											{%= pd %}
 										</span>
@@ -143,14 +156,14 @@
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis h6 text-muted col-xs-12">
 										<div class="row">
-											<div class="col-sm-4">Person</div>
+											<div class="col-sm-6">Person</div>
 											<div class="col-sm-4">Mobile No</div>
-											<div class="col-sm-4">Status</div>
+											<div class="col-sm-2">Status</div>
 										</div>
 									</div>
 									<div class="col-sm-3 list-col ellipsis h6 text-muted col-xs-12">
 										<div class="row">
-											<div class="col-sm-4"></div>
+											<div class="col-sm-12"></div>
 										</div>
 									</div>
 								</div>
@@ -166,13 +179,18 @@
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis col-xs-12">
 										<div class="row">
-											<div class="col-sm-4 ellipsis"><a  class="bold" href="/desk#Form/Lead/{{ data_grid_3[i].name }}">{%= data_grid_3[i].lead_name %}</a></div>
+											<div class="col-sm-6 ellipsis" title="{%= data_grid_3[i].lead_name %}, {%= data_grid_3[i].territory %}">
+											<a class="bold" href="/desk#Form/Lead/{{ data_grid_3[i].name }}">
+												{%= data_grid_3[i].lead_name %}
+											</a>
+											<span class="small text-muted ellipsis">{%= data_grid_3[i].lead_awfis_territory %}</span>
+											</div>
 											<div class="col-sm-4"><span class="small">{%= data_grid_3[i].mobile_no %}</span></div>
-											<div class="col-sm-4"><span class="small">{%= data_grid_3[i].status %}</span></div>
+											<div class="col-sm-2"><span class="small">{%= data_grid_3[i].status %}</span></div>
 										</div>
 									</div>
 									<div class="col-sm-3 list-col ellipsis col-xs-12">
-										<span class="text-muted">
+										<span class="text-muted" title="{%= data_grid_3[i].creation %}">
 											{% var pd = prettyDate(data_grid_3[i].creation, 1); %}
 											{%= pd %}
 										</span>
@@ -188,7 +206,7 @@
 
 					{% if (data_grid_3.length == 0) { %}
 					<div class="list-row text-center">
-						<span>No assigned Leads to show.</span>
+						<span>No Leads to show.</span>
 					</div>
 					{% } %}
 				</div>
