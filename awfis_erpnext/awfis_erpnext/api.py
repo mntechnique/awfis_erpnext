@@ -50,7 +50,7 @@ def get_lead_list_data():
 				)
 	user_territories = [ut.defvalue for ut in user_territories]
 	
-	if "Sales Manager" in user_roles or "Awfis Ops Manager" in user_roles:
+	if "Sales Manager" in user_roles or "Awfis Ops Manager" in user_roles or "System Manager" in user_roles:
 		team = frappe.get_all("DefaultValue", 
 					fields=["parent"], 
 					filters=[["defkey", "=", "Territory"],["defvalue", "in", user_territories], ["parenttype", "=", "User Permission"]],
@@ -63,7 +63,10 @@ def get_lead_list_data():
 							(l.contact_date and frappe.utils.getdate(l.contact_date) == frappe.utils.getdate()) and
 							(
 								(l.owner in team) or 
-								(l._assign and len([assignee for assignee in ast.literal_eval(l._assign) if assignee in team]) > 0)
+								(l._assign and 
+									(len([assignee for assignee in ast.literal_eval(l._assign) if assignee in team]) > 0) or
+									(frappe.session.user in ast.literal_eval(l._assign))
+								)
 							)
 						]
 

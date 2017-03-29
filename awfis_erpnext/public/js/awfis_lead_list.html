@@ -39,7 +39,7 @@
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis col-xs-12">
 										<div class="row">
-											<div class="col-sm-6 ellipsis" title="{%= data_grid_1[i].lead_name %}, {%= data_grid_1[i].lead_name %}">
+											<div class="col-sm-6 ellipsis" title="{%= data_grid_1[i].lead_name %}, {%= data_grid_1[i].awfis_lead_territory %}">
 											<a class="bold" href="/desk#Form/Lead/{{ data_grid_1[i].name }}">{%= data_grid_1[i].lead_name %}</a>
 											<span class="small text-muted ellipsis">{%= data_grid_1[i].awfis_lead_territory %}</span>
 											</div>
@@ -48,13 +48,17 @@
 										</div>
 									</div>
 									<div class="col-sm-3 list-col ellipsis col-xs-12">
-										<span class="text-muted" title="{%= data_grid_1[i].creation %}">
-											{% var pd = prettyDate(data_grid_1[i].creation, 1); %}
-											{%= pd %}
-										</span>
-										<span class="text-muted">
-											
-										</span>
+										<ul class="list-inline text-right" title="{%= data_grid_1[i].creation %}">
+											<li>{% var pd = prettyDate(data_grid_1[i].creation, 1); %}{%= pd %}</li>
+											<li>
+												{% var assign_list1 = JSON.parse(data_grid_1[i]._assign) || []; %}
+												{% if (assign_list1.length) { %}
+													{%= frappe.avatar(assign_list1[assign_list1.length - 1]) %}
+												{% } else { %}
+													<span class="avatar avatar-small avatar-empty"></span> 												
+												{% } %}
+											</li>
+										</ul>
 									</div>
 								</div>
 							</div>
@@ -106,22 +110,28 @@
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis col-xs-12">
 										<div class="row">
-											<div class="col-sm-6 ellipsis" title="{%= data_grid_2[i].lead_name %}, {%= data_grid_2[i].territory %}">
+											<div class="col-sm-6 ellipsis" title="{%= data_grid_2[i].lead_name %}, {%= data_grid_2[i].awfis_lead_territory %}">
 												<a  class="bold" href="/desk#Form/Lead/{{ data_grid_2[i].name }}">{%= data_grid_2[i].lead_name %}</a>
-												<span class="small text-muted ellipsis">{%= data_grid_2[i].territory %}</span>
+												<span class="small text-muted ellipsis">{%= data_grid_2[i].awfis_lead_territory %}</span>
 											</div>
 											<div class="col-sm-4"><span class="small">{%= data_grid_2[i].mobile_no %}</span></div>
 											<div class="col-sm-2"><span class="small">{%= data_grid_2[i].status %}</span></div>
 										</div>
 									</div>
 									<div class="col-sm-3 list-col ellipsis col-xs-12">
-										<span class="text-muted" title="{%= data_grid_2[i].creation %}">
-											{% var pd = prettyDate(data_grid_2[i].creation, 1); %}
-											{%= pd %}
-										</span>
-										<span class="text-muted">
-											
-										</span>
+										<ul class="list-inline text-right">
+											<li title="{%= data_grid_2[i].creation %}">
+												{% var pd = prettyDate(data_grid_2[i].creation, 1); %}{%= pd %}
+											</li>
+											<li>
+												{% var assign_list2 = JSON.parse(data_grid_2[i]._assign) || []; %}
+												{% if (assign_list2.length) { %}
+													{%= frappe.avatar(assign_list2[assign_list2.length - 1]) %}
+												{% } else { %}
+													<span class="avatar avatar-small avatar-empty"></span> 												
+												{% } %}		
+											</li>
+										</ul>
 									</div>
 								</div>
 							</div>
@@ -179,24 +189,28 @@
 								<div class="row">
 									<div class="col-sm-9 list-col ellipsis col-xs-12">
 										<div class="row">
-											<div class="col-sm-6 ellipsis" title="{%= data_grid_3[i].lead_name %}, {%= data_grid_3[i].territory %}">
+											<div class="col-sm-6 ellipsis" title="{%= data_grid_3[i].lead_name %}, {%= data_grid_3[i].awfis_lead_territory %}">
 											<a class="bold" href="/desk#Form/Lead/{{ data_grid_3[i].name }}">
 												{%= data_grid_3[i].lead_name %}
 											</a>
-											<span class="small text-muted ellipsis">{%= data_grid_3[i].lead_awfis_territory %}</span>
+											<span class="small text-muted ellipsis">{%= data_grid_3[i].awfis_lead_territory %}</span>
 											</div>
 											<div class="col-sm-4"><span class="small">{%= data_grid_3[i].mobile_no %}</span></div>
 											<div class="col-sm-2"><span class="small">{%= data_grid_3[i].status %}</span></div>
 										</div>
 									</div>
 									<div class="col-sm-3 list-col ellipsis col-xs-12">
-										<span class="text-muted" title="{%= data_grid_3[i].creation %}">
-											{% var pd = prettyDate(data_grid_3[i].creation, 1); %}
-											{%= pd %}
-										</span>
-										<span class="text-muted">
-											
-										</span>
+										<ul class="list-inline text-right">
+											<li>{% var pd = prettyDate(data_grid_3[i].creation, 1); %} {%= pd %}</li>
+											<li title="{%= data_grid_3[i].creation %}">
+												{% var assign_list3 = JSON.parse(data_grid_3[i]._assign) || []; %}
+												{% if (assign_list3.length) { %}
+													{%= frappe.avatar(assign_list3[assign_list3.length - 1]) %}
+												{% } else { %}
+													<span class="avatar avatar-small avatar-empty"></span> 												
+												{% } %}		
+											</li>
+										</ul>
 									</div>
 								</div>
 							</div>
