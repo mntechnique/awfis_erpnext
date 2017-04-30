@@ -115,14 +115,15 @@ def create_popup(caller_number, agent_id, call_id):
 
 	ld_name = frappe.db.get_value("Lead", {"mobile_no": caller_number_processed}, "name") # frappe.get_all("Lead", fields=["*"], filters={"mobile_no": caller_number_processed})
 
+	is_new_lead = False
 	if not ld_name:
 		#Create stub lead if lead is not found.
 		ld = frappe.new_doc("Lead")
 		ld.mobile_no = caller_number_processed
-		ld.lead_name = "New Lead ({m})".format(m=caller_number)
+		ld.lead_name = "Lead ({m})".format(m=caller_number)
 
 		#Set mandatory custom fields.
-		ld.first_name = "New Lead ({m})".format(m=caller_number)
+		ld.first_name = "Lead ({m})".format(m=caller_number)
 		ld.awfis_mobile_no = caller_number_processed
 		ld.source = "Other"
 		ld.awfis_lead_territory = "All Territories"
@@ -131,9 +132,12 @@ def create_popup(caller_number, agent_id, call_id):
 		frappe.set_user(agent_id)
 		ld.insert(ignore_permissions=True)
 		frappe.db.commit()
+
+		is_new_lead = 1
 	else:
 		ld = frappe.get_doc("Lead", ld_name)
 
+		is_new_lead = 0
 
 	#Make popup content.
 	lead_fields = {"mobile_no": caller_number,
@@ -141,7 +145,8 @@ def create_popup(caller_number, agent_id, call_id):
 			"company_name": ld.company_name,
 			"name": ld.name,
 			"call_timestamp": frappe.utils.datetime.datetime.strftime(frappe.utils.datetime.datetime.today(), '%d/%m/%Y %H:%M:%S'),
-			"call_id": call_id}
+			"call_id": call_id,
+			"is_new_lead": is_new_lead}
 
 	popup_content = frappe.render_template("awfis_erpnext/templates/lead_info.html", lead_fields)
 
