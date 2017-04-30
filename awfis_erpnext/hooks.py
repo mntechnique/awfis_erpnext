@@ -119,8 +119,7 @@ override_whitelisted_methods = {
  	"erpnext.selling.page.sales_funnel.sales_funnel.get_funnel_data": "awfis_erpnext.awfis_erpnext.awf.awf_get_funnel_data"
  }
 
-fixtures = [{"dt": "Custom Script", "filters":[["name", "in", ["Lead-Client", "Material Request-Client", "Item Attribute-Client", "Customer-Client", "Contact-Client"]]]},
-			 {"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Ops Manager"]]] },
+fixtures = [{"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Ops Manager"]]] },
 			 {"dt": "Custom Field", "filters":[["name", "in", ['Purchase Order-awfis_warehouse',
 					'Lead-awfis_spaces', 'Lead-sb_spaces', 'Lead-lead_awfis_centres',
 					'Lead-section_break_centres','Lead-awfis_lead_channel', 'Lead-channel_partner',
