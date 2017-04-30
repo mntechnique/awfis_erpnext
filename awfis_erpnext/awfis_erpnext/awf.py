@@ -278,57 +278,8 @@ def awf_create_lead(web_form, data):
 
 
 def awf_lead_after_insert(self, method):
-
 	assign_and_share_lead(self)
-	# #If owner = Sales User, assign to self.
-	# #If owner = Ops User, assign to RSM.
-	# #print "Owner name", self.owner
-
-	# owner = frappe.get_doc("User", self.owner)
-
-	# #print "Owner object", owner
-
-	# role_desc_list = [r.role for r in owner.user_roles]
-
-
-	# from frappe.desk.form import assign_to
-
-	# if "Awfis Ops User" in role_desc_list:
-	# 	assignto = []
-
-	# 	users = frappe.get_all("DefaultValue", fields=["parent"], filters={"defkey": "Territory", "defvalue": self.awfis_lead_territory, "parenttype": "User Permission"})
-	# 	for user in users:
-	# 		u = frappe.get_doc("User",user['parent'])
-	# 		for role in u.user_roles:
-	# 			if role.role == "Sales Manager":
-	# 				assignto.append(u.name)
-
-	# 	for assignee in assignto:
-	# 		try:
-	# 			assign_to.add({'assign_to':assignee,
-	# 						'doctype':'Lead',
-	# 						'name':self.name,
-	# 						'description':'Lead {0} has been assigned to you.'.format(self.name),
-	# 						'notify':True})
-	# 			frappe.db.commit()
-	# 		except Exception as e:
-	# 			print e
-
-	# 	share_with_self("Lead", self.name, self.owner)
-
-	# elif ("Sales User" in role_desc_list) or ("Sales Manager" in role_desc_list):
-	# 	try:
-	# 		assign_to.add({'assign_to':self.owner,
-	# 					'doctype':'Lead',
-	# 					'name':self.name,
-	# 					'description':'Lead {0} has been assigned to you.'.format(self.name),
-	# 					'notify':True})
-	# 		frappe.db.commit()
-
-	# 	except Exception as e:
-	# 		print e
-
-	# 	share_with_self("Lead", self.name, self.owner) #Share with self to allow editing while overriding territory restrictions.
+	
 
 def share_with_self(doctype, docname, owner):
 	share.add(doctype=doctype, name=docname, user=owner, read=1, write=1)
@@ -337,7 +288,7 @@ def share_with_self(doctype, docname, owner):
 def awf_lead_has_permission(doc, user):
 	u = frappe.get_doc("User", user)
 
-	roles = [ur.role for ur in u.user_roles]
+	roles = [ur.role for ur in u.roles]
 
 	if ("Sales User" in roles) or ("Sales Manager" in roles) or ("Awfis Ops User" in roles) or ("Awfis Ops Manager" in roles):
 		return True
@@ -376,113 +327,13 @@ def awf_lead_validate(self, method):
 
 
 def awf_lead_on_update(self, method):
-	#Assign lead to self.
 	assign_and_share_lead(self)
-
-	#Append version history
-	comment_text = awf_lead_append_version_history(self)
-	self.awfis_lead_edits_history = comment_text
-
-	if comment_text:
-		#self.add_comment("Comment", text=comment_text)
-
-		notif_text =  "<div class='text-muted'>"
-		notif_text += "<div class='small text-muted'>"
-		notif_text +=  comment_text
-		notif_text += '</div>'
-		notif_text += '</div>'
-
-		notif = frappe.new_doc("Communication")
-		notif.subject = "Lead edits made by {0}".format(frappe.session.user)
-		notif.owner = frappe.session.user
-		notif.communication_type = "Communication"
-		notif.content = notif_text
-		notif.status = "Linked"
-		notif.sent_or_received = "Sent"
-		notif.reference_doctype = "Lead"
-		notif.reference_name = self.name
-
-		notif.insert(ignore_permissions=True)
-		frappe.db.commit()
-
-def awf_lead_append_version_history(lead_doc):
-	diffkeys = []
-	changes = []
-
-	#Append Lead Version history
-	frappe.add_version(lead_doc)
-
-	#Get Versions
-	versions = frappe.get_all("Version", filters={"docname": lead_doc.name}, fields=["name", "modified", "modified_by", "doclist_json"], order_by="modified")
-
-	#Maintain change history if there are more than one.
-	if len(versions) > 1:
-		current_version = versions[len(versions) - 1]
-		prev_version = versions[len(versions) - 2]
-
-		current_doclist_json = json.loads(current_version["doclist_json"])
-		prev_doclist_json = json.loads(prev_version["doclist_json"])
-
-
-		diffkeys = [k for k in current_doclist_json if ((k in prev_doclist_json) and (k in current_doclist_json)) and (prev_doclist_json[k] != current_doclist_json[k])]
-
-		changes = []
-		diffkeys = [dk for dk in diffkeys if dk not in ["modified", "modified_by", "idx"]]
-
-		comment_text = None
-
-		if len(diffkeys) > 0:
-			for k in diffkeys:
-				changed_field = frappe.get_meta("Lead").get_field(k)
-				changed_field_value = current_doclist_json[k]
-
-				if changed_field:
-					diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
-					changes.append("<li>" + diffdesc + "</li>")
-
-				# print "Different Key", k
-				# changed_field = frappe.get_meta("Lead").get_field(k)
-				# changed_field_value = None
-
-				# #TODO: Handle Tables
-				# if changed_field:
-				# 	if changed_field.fieldtype == "Table":
-				# 		#tablekeys = [tk for tk in current_doclist_json[k][0].keys() if tk not in ["modified", "modified_by"]]
-				# 		keys = frappe.get_all("DocField", {"fieldname": changed_field.name})
-
-				# 	#diff_tablekeys = [dk for dk in current_doclist_json[k] if (dk in prev_doclist_json[k] and dk in current_doclist_json[k]) and (prev_doclist_json[k][dk] != current_doclist_json[k][dk])]
-
-				# 		for x in xrange(1,10):
-				# 			print "Tablekeys", tablekeys
-				# 	#print "Diff Tablekeys", diff_tablekeys
-
-				# 	# changed_field_value_list = []
-				# 	# for dtk in diff_tablekeys:
-				# 	#  	changed_field_value_list.append(current_doclist_json[k])
-
-				# 	# changed_field_value = "<br>" + ", ".join(changed_field_value_list)
-				# 	# changed_field_value = "<br>" + "<br>".join([", ".join(str(v) for v in row.values()) for row in ])
-				# 	else:
-				# 		changed_field_value = current_doclist_json[k]
-				# 		diffdesc = "'{0}' set to '{2}'".format(changed_field.label, prev_doclist_json[k] or 'blank', changed_field_value or 'blank')
-				# 		changes.append("<li>" + diffdesc + "</li>")
-			
-
-			changes = ["<ul>"] + changes
-			changes.append("</ul>")
-			changes.append("- by {0} on {1}".format(current_version["modified_by"], frappe.utils.datetime.datetime.strftime(frappe.utils.get_datetime(current_version["modified"]), "%d-%b-%Y %H:%M")))
-
-			comment_text = "".join(changes)
-
-		return comment_text
-	else:
-		return ""
 
 
 def assign_and_share_lead(lead):
 	owner = frappe.get_doc("User", lead.owner)
 
-	role_desc_list = [r.role for r in owner.user_roles]
+	role_desc_list = [r.role for r in owner.roles]
 
 	if "Awfis Ops User" in role_desc_list:
 		assignees = []
@@ -490,7 +341,7 @@ def assign_and_share_lead(lead):
 
 		for user in users:
 			u = frappe.get_doc("User",user['parent'])
-			for role in u.user_roles:
+			for role in u.roles:
 				if role.role == "Sales Manager":
 					assignees.append(u.name)
 
