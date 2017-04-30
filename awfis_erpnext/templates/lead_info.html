@@ -1,7 +1,14 @@
 <h3>Incoming Call</h3>
 <ul style="list-style: none">
-	<li><h3><i class="icon-phone" style="margin-right: 20px"></i>{{ mobile_no }}</h3></li>
-	<li><h3><i class="icon-user" style="margin-right: 20px"></i><a href="/desk#Form/Lead/{{ name }}">{{ lead_name }}</a></h3></li>
+	<li><h3><i class="fa fa-phone" style="margin-right: 20px"></i>{{ mobile_no }}</h3></li>
+	<li>
+		<h3>
+			<i class="fa fa-user" style="margin-right: 20px"></i><a href="/desk#Form/Lead/{{ name }}">{{ lead_name }}</a>
+			{% if is_new_lead %}
+				<span class="label label-info">New</span>
+			{% endif %}
+		</h3>
+	</li>
 	<li><a href="/desk#Form/Lead/{{ name }}">View full info</a></li>
 </ul>
 <br><span class="small text-muted">Call ID: {{ call_id }} received at {{ call_timestamp }}</span>
