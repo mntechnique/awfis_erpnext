@@ -38,31 +38,6 @@ def notify_incoming_call(caller_number, agent_number, call_id):
 	else:
 		create_popup(caller_number, agent_id, frappe.db.escape(call_id))
 
-	# # if possible then minues days from datetime
-	# def minues_to_date(date, years=0, months=0, days=0):
-	# 	"""Adds `days` to the given date"""
-	# 	from dateutil.relativedelta import relativedelta
-
-	# 	as_string, as_datetime = False, False
-	# 	if date==None:
-	# 		date = now_datetime()
-
-	# 	if isinstance(date, basestring):
-	# 		as_string = True
-	# 		if " " in date:
-	# 			as_datetime = True
-	# 		date = parser.parse(date)
-
-	# 	date = date - relativedelta(years=years, months=months, days=days)
-
-	# 	if as_string:
-	# 		if as_datetime:
-	# 			return date.strftime(DATETIME_FORMAT)
-	# 		else:
-	# 			return date.strftime(DATE_FORMAT)
-	# 	else:
-	# 		return date
-
 
 @frappe.whitelist()
 def validate_stock_entry(self, method):
@@ -80,32 +55,7 @@ def validate_stock_entry(self, method):
 				if (getdate(expiry_date) - frappe.utils.datetime.date.today()).days <= expiry_warning_period:
 					frappe.throw(_("Row {0}: Item {1} cannot be issued. Batch {2} for selected item is about to expire.".format(item.idx, item.item_name, item.batch_no)))
 
-	# if expiry_warning:
-	# 	expiry_date = frappe.db.get_value('Batch', self.batch_no, 'expiry_date')
-	# 	x_day_before = (add_days(getdate(self.expiry_date), expiry_warning) <= date.today())
-	# 	# x_day_before = (expiry_date-expiry_warning) <= date.today())
-	# 	if x_day_before:
-	# 		frappe.throw(_("Material Can not be transfered. because of expiry warning period of {0}").format(expiry_warning))
 
-
-
-
-# ===============
-# 		self.pst_respond_by = str(frappe.utils.data.getdate(self.pst_posted_on) + frappe.utils.datetime.timedelta(days=2))
-# ===========
-#  my data start work here.......................................
-# // additional validation on dates
-# cur_frm.add_fetch("Awfis Settings", "expiry_warning_period", "expiry_warning_period");
-# cur_frm.add_fetch("Batch", "expiry_date", "expiry_date");
-
-# frappe.ui.form.on("batch_no", "validate", function(frm) {
-
-#     if (frm.doc.expiry_date - frm.doc.expiray_warning_period < get_today()) {
-#         msgprint("You can not Transfer material ");
-#         validated = false;
-#     }
-# });
-# =========
 def create_popup(caller_number, agent_id, call_id):
 	#return caller_number
 
@@ -242,25 +192,6 @@ def popuptest(caller_number, agent_number, call_id):
 		return "No agent with this number."
 	else:
 		return "Popup created {c}, {a}, {aid}, {cl}".format(c=caller_no, a=agent_number, aid=agent_id, cl=call_id)
-		#create_popup(caller_number, agent_id, frappe.db.escape(call_id))
-
-	# is_request_valid = validate_request_header()
-	# caller_no = process_mobile_no(caller_number)
-	# agent_id = validate_agent(agent_number)
-
-	# if is_request_valid != 1:
-	# 	return "You are not authorized to make this request. [0]"
-	# elif agent_id == "":
-	# 	return "No agent with this number."
-	# else:
-	# 	return "Popup created {c}, {a}, {cl}".format(c=caller_no, a=agent_number, cl=call_id)
-	# 	#create_popup(caller_number, agent_id, frappe.db.escape(call_id))
-
-
-# @frappe.whitelist(allow_guest=True)
-# def regextest(caller_number):
-# 	cano = process_mobile_no(caller_number)
-# 	return "Raw: {r}, Processed: {p}".format(r=caller_number, p=cano)
 
 from erpnext.selling.page.sales_funnel.sales_funnel import get_funnel_data
 @frappe.whitelist()
