@@ -11,16 +11,16 @@ frappe.ui.form.on("Lead Awfis Space", {
         "Fixed Seat": 1, "Flexi Seat": 1, "Cabin Seat": 1, "Virtual Office": 1, "Mobile Awfis": 1,
         "Meeting Room 4": 4, "Meeting Room 6": 6, "Meeting Room 8": 8, "Meeting Room 10": 10}
 
-      space.capacity = space_capacity_map[space.space_type];      
+      space.capacity = space_capacity_map[space.space_type];
 
-      refresh_field("awfis_spaces"); 
+      refresh_field("awfis_spaces");
     }
 });
 
 //Ensure that only newer tenures are seen.
 
 frappe.ui.form.on("Lead Awfis Centre", "centre_city", function(frm, cdt, cdn){
-  var child = locals[cdt][cdn]; 
+  var child = locals[cdt][cdn];
   grid_row = cur_frm.fields_dict['lead_awfis_centres'].grid.grid_rows_by_docname[child.name];
   field = frappe.utils.filter_dict(grid_row.docfields, {fieldname: "centre"})[0]
   field.get_query = function(){
@@ -61,7 +61,7 @@ frappe.ui.form.on("Lead", "onload", function(frm) {
             }
         };
     });
-    
+
     if ((frappe.boot.user.roles != "Awfis Ops User") && (frm.doc.__islocal)) {
       var dialog = new frappe.ui.Dialog({
         title: __("Lookup Lead"),
@@ -73,9 +73,9 @@ frappe.ui.form.on("Lead", "onload", function(frm) {
 
       });
 
-      dialog.fields_dict.search_lead.$input.click(function() { 
+      dialog.fields_dict.search_lead.$input.click(function() {
           args = dialog.get_values();
-          
+
           frappe.call({
             method: "awfis_erpnext.awfis_erpnext.api.lookup_lead",
             args: {
@@ -89,7 +89,7 @@ frappe.ui.form.on("Lead", "onload", function(frm) {
                   cur_frm.set_value("awfis_mobile_no", args.caller_number)
                   dialog.hide();
               } else {
-                  frappe.set_route("Form", "Lead", r.message);  
+                  frappe.set_route("Form", "Lead", r.message);
                   dialog.hide();
                   cur_frm.refresh();
               }
@@ -113,14 +113,14 @@ frappe.ui.form.on("Lead", "last_name", function(frm){
 frappe.ui.form.on("Lead", "refresh", function(frm) {
     frm.toggle_display("lead_name", false);
     frm.toggle_display("lead_name", false);
-    
-    //Set sources by channel. 
-    var sources_by_channel = { 
-      "Sales Team" : ["Referral", "Marketing", "Broker", "Direct"], 
+
+    //Set sources by channel.
+    var sources_by_channel = {
+      "Sales Team" : ["Referral", "Marketing", "Broker", "Direct"],
       "Centre Walk-in": ["Outdoor", "Online", "Referral", "Marketing"],
       "Call Centre": ["Outdoor", "Online", "Referral", "Marketing", "Returning Customer", "NA"],
-      "Inbound": ["Email", "SEM", "Online", "Instant Office", "Listings", "SEO"]
-    } 
+      "Inbound": ["Email", "SEM", "Online", "Instant Office", "Listings"]
+    }
 
     var campaigns_by_sub_source = {
       "Events" : ["Internal", "External"],
@@ -168,7 +168,7 @@ frappe.ui.form.on("Lead", "refresh", function(frm) {
            ]
         }
       }
-    });  
+    });
     set_field_visibility();
 
     //Hide mobile no in modify mode.
@@ -221,7 +221,7 @@ function buildName(fname, lname) {
 //       space.capacity = "";
 //       set_capacity_property_readonly(0);
 //    }
-//    refresh_field("awfis_spaces"); 
+//    refresh_field("awfis_spaces");
 // });
 
 function set_capacity_property_readonly(state) {
@@ -253,7 +253,7 @@ frappe.ui.form.on("Lead", "awfis_lead_sub_source", function(frm) {
 });
 
 function set_field_visibility() {
-  
+
   if (cur_frm.doc.awfis_lead_channel == "Sales Team") {
     cur_frm.set_df_property("awfis_lead_sub_source", "hidden", ["Referral", "Broker"].indexOf(cur_frm.doc.source) == -1);
   } else if (cur_frm.doc.awfis_lead_channel == "Call Centre") {
@@ -262,9 +262,9 @@ function set_field_visibility() {
     cur_frm.set_df_property("awfis_lead_sub_source", "hidden", 0);
   }
 
-  
+
   if (cur_frm.doc.awfis_lead_channel == "Sales Team") {
-    cur_frm.set_df_property("campaign_name", "hidden", (cur_frm.doc.source != "Marketing"));  
+    cur_frm.set_df_property("campaign_name", "hidden", (cur_frm.doc.source != "Marketing"));
   } else if (["Events", "Social Media", "Online Listing", "Advertising", "Friend/Colleague"].indexOf(cur_frm.doc.awfis_lead_sub_source) == -1) {
     cur_frm.set_df_property("campaign_name", "hidden", 1);
   } else {
