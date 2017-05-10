@@ -10,32 +10,34 @@ def add_pos_invoice(pos_invoice=None):
     if validate_request_header() != 1:
         return "You are not authorized to make this request."
 
-    if pos_invoice:
+    if not pos_invoice:
+        return "POS Invoice data was not supplied."
+
+    try:
         pos_invoice = json.loads(pos_invoice)
-        if pos_invoice.get("customer"):
-            pos_invoice_name = frappe.db.get_value("Sales Invoice",{"customer":pos_invoice.get("customer")},"name")
+    except Exception as e:
+        return "POS Invoice could not be converted to JSON: {0}".format(e) 
 
-            if pos_inovie_name:
-                awfis_pos_invoice = frappe.get_doc("Sales Invoice", pos_invoice_name)
-            else:
-                awfis_pos_invoice = frappe.new_doc("Sales Invoice")
+    pos_invoice_name = frappe.db.get_value("Sales Invoice",{"customer":pos_invoice.get("customer")},"name")
 
-            if awfis_pos_invoice:
-                awfis_pos_invoice.posting_date = pos_invoice.get("posting_date")
-                awfis_pos_invoice.customer = pos_invoice.get("customer")
-                awfis_pos_invoice.is_pos = pos_invoice.get("is_pos")
-
-                for i in pos_invoice.get("items"):
-                    awfis_pos_invoice.item_code = i.get("item_code")
-                    awfis_pos_invoice.qty = i.get("qty")
-                     awfis_pos_invoice.warehuse = i.get("warehouse")
-
-
+    awfis_pos_invoice = frappe.new_doc("Sales Invoice")
+    
+    awfis_pos_invoice = frappe.get_doc("Sales Invoice", pos_invoice_name)
+    awfis_pos_invoice.posting_date = pos_invoice.get("posting_date")
+    awfis_pos_invoice.customer = pos_invoice.get("customer")
+    awfis_pos_invoice.is_pos = 1
+    awfis_pos_invoice.append("items": {
+        "item_code": i.get("item_code"),
+        "warehouse": i.get("warehouse"),
+        "qty":i.get("qty")
+    })
+    
+    try:
         awfis_pos_invoice.save(ignore_permissions=True)
         frappe.db.commit()
-    else:
-        return "Please specify Sales Invoice"
-
+    except Exception as e:
+        raise
+    
     return awfis_pos_invoice
 
 def validate_request_header():
