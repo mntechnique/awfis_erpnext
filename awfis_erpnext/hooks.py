@@ -139,7 +139,8 @@ fixtures = [{"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Op
 					'Item Group-sb1_expiry_warning_period', 'Item Group-expiry_warning_period',
 					'Employee-awfis_employee_territory', "Lead-lead_owner_centre", "Lead-awfis_space_requirements_sem", "Lead-awfis_location_sem",
 					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent', 'Lead-sb_awfis_lead_details',
-					'Lead-awfis_lead_is_repeat_customer']]]},
+					'Lead-awfis_lead_is_repeat_customer',
+					'Sales Invoice-awfis_pos_invoice_no']]]},
 			 "Property Setter"]
 			 # {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
 			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC",
