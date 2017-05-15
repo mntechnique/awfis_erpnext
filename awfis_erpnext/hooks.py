@@ -141,7 +141,9 @@ fixtures = [{"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Op
 					'Lead-awfis_lead_sub_source', 'Lead Source-awfis_lead_source_parent', 'Lead-sb_awfis_lead_details',
 					'Lead-awfis_lead_is_repeat_customer',
 					'Sales Invoice-awfis_pos_invoice_no']]]},
-			 "Property Setter"]
+			 {"dt": "Property Setter", "filters":[[
+			 	"name", "not in", ["Lead-source-options", "Opportunity-source-options"] 
+			 ]]}]
 			 # {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
 			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC",
 			 # 		"Outdoor hoardings/ Banners/ signage outside Awfis centres", "Customer",
