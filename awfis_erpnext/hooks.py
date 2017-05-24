@@ -142,7 +142,7 @@ fixtures = [{"dt": "Role", "filters":[["name","in", ["Awfis Ops User", "Awfis Op
 					'Lead-awfis_lead_is_repeat_customer',
 					'Sales Invoice-awfis_pos_invoice_no']]]},
 			 {"dt": "Property Setter", "filters":[[
-			 	"name", "not in", ["Lead-source-options", "Opportunity-source-options"] 
+			 	"name", "not in", ["Lead-source-options", "Opportunity-source-options", "Sales Invoice-lead_source-options", "Sales Order-lead_source-options"] 
 			 ]]}]
 			 # {"dt":"Print Format", "filters": [["name", "in", ["Awfis Purchase Order"]]]},
 			 # {"dt":"Lead Source", "filters":[["name", "in", ["IPC",
