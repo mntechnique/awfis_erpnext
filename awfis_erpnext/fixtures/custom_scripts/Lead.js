@@ -119,7 +119,7 @@ frappe.ui.form.on("Lead", "refresh", function(frm) {
       "Sales Team" : ["Referral", "Marketing", "Broker", "Direct"],
       "Centre Walk-in": ["Outdoor", "Online", "Referral", "Marketing"],
       "Call Centre": ["Outdoor", "Online", "Referral", "Marketing", "Returning Customer", "NA"],
-      "Inbound": ["Email", "SEM", "Online", "Instant Office", "Listings"]
+      "Inbound": ["Email", "SEM", "Online", "Instant Office", "Listings", "Website"]
     }
 
     var campaigns_by_sub_source = {
